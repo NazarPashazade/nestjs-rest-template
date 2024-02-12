@@ -12,8 +12,6 @@ import {
     POSTGRES_USER,
 } from '../config/environment';
 
-
-
 export const postgresDataSource: DataSourceOptions = {
     type: 'postgres',
     name: 'default',
@@ -29,10 +27,6 @@ export const postgresDataSource: DataSourceOptions = {
     migrations: [path.join(__dirname, 'migrations/*.{ts,js}')],
     migrationsTableName: "migrations_typeorm",
 };
-
-
-console.log({__dirname,postgresDataSource})
-
 
 const dataSource = new DataSource(postgresDataSource)
 export default dataSource

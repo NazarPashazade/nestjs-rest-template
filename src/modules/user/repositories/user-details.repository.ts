@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { EntityRepository } from "typeorm";
-import { User } from "../domain/models/user.model";
 import { BaseRelayRepository } from "../../shared/repositories/base-relay-repository";
+import { UserDetails } from "../domain/models/user-detail.model";
 
 @Injectable()
-@EntityRepository(User)
-export class UsersRepository extends BaseRelayRepository<User>{ }
+@EntityRepository(UserDetails)
+export class UserDetailsRepository extends BaseRelayRepository<UserDetails>{ }
