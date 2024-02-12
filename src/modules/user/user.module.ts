@@ -2,11 +2,13 @@ import { Module } from '@nestjs/common';
 
 const services = [];
 
-const providers = [...services];
+const _providers = [...services];
+
+const _exports = [...services]
 
 @Module({
     imports: [],
-    providers,
-    exports: [...services],
+    providers: _providers,
+    exports: _exports,
 })
 export class UserModule { }
