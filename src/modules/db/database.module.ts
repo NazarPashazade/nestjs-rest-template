@@ -15,12 +15,11 @@ const repositories = [RolesRepository, UsersRepository, UserDetailsRepository]
 
 const seeders = [RolesSeeder, UsersSeeder];
 
+const _imports = [TypeOrmModule.forRoot(postgresDataSource), TypeOrmModule.forFeature(repositories)]
 
-const _providers = [DbContext, ...services, ...seeders]
+const _providers = [DbContext, ...services, ...seeders,...repositories]
 
 const _exports = [DbContext, ...services]
-
-const _imports = [TypeOrmModule.forRoot(postgresDataSource), TypeOrmModule.forFeature(repositories)]
 
 @Global()
 @Module({

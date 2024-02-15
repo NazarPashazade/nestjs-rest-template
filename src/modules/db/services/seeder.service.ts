@@ -15,7 +15,7 @@ export class SeederService {
     async runSeedsAsync(): Promise<void> {
         this.logger.log('Running seeders ...', 'Database');
         await this.rolesSeeder.run();
-        await this.usersSeeder.run();
+        // await this.usersSeeder.run();
         this.logger.log('Finished running seeders', 'Database');
     }
 }
