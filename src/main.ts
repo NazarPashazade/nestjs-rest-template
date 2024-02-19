@@ -24,7 +24,7 @@ async function bootstrap() {
   await dbSeeder.runSeedsAsync();
 
   await app.listen(port, address, () => {
-    logger.log(`API listening on ${address} ......................`, 'Bootstrap');
+    logger.log(`API listening on ${port} ......................`, 'Bootstrap');
   });
 
 }

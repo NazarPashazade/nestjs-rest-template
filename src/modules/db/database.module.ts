@@ -11,13 +11,20 @@ import { RolesSeeder, UsersSeeder } from './seaders';
 
 const services = [SeederService];
 
-const repositories = [RolesRepository, UsersRepository, UserDetailsRepository]
+const repositories = [
+    RolesRepository,
+    UsersRepository,
+    UserDetailsRepository
+]
 
-const seeders = [RolesSeeder, UsersSeeder];
+const seeders = [
+    RolesSeeder,
+    UsersSeeder
+];
 
 const _imports = [TypeOrmModule.forRoot(postgresDataSource), TypeOrmModule.forFeature(repositories)]
 
-const _providers = [DbContext, ...services, ...seeders,...repositories]
+const _providers = [DbContext, ...services, ...seeders, ...repositories]
 
 const _exports = [DbContext, ...services]
 

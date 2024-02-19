@@ -7,7 +7,7 @@ import { Gender } from '../../user/domain/enums/gender';
  
 @Injectable()
 export class UsersSeeder {
-    constructor(private readonly dbContext: DbContext) {}
+    constructor(private readonly dbContext: DbContext) { }
 
     public async run(): Promise<any> {
         const email = ADMIN_EMAIL;

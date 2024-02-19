@@ -1,8 +1,12 @@
-import { Injectable } from "@nestjs/common";
-import { EntityRepository } from "typeorm";
-import { BaseRelayRepository } from "../../shared/repositories/base-relay-repository";
-import { Role } from "../domain/models/role.model";
- 
+import { Injectable } from '@nestjs/common';
+import { DataSource, Repository } from 'typeorm';
+import { Role } from '../domain/models/role.model';
+
 @Injectable()
-@EntityRepository(Role)
-export class RolesRepository extends BaseRelayRepository<Role>{}
+export class RolesRepository extends Repository<Role> {
+    constructor(private dataSource: DataSource) {
+        super(Role, dataSource.createEntityManager());
+    }
+}
+
+

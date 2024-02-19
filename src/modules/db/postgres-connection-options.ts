@@ -13,8 +13,8 @@ import {
 } from '../config/environment';
 
 export const postgresDataSource: DataSourceOptions = {
-    type: 'postgres',
     name: 'default',
+    type: 'postgres',
     host: POSTGRES_HOST,
     port: POSTGRES_PORT,
     database: POSTGRES_DB,
