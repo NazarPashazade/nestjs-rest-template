@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { RoleService } from '../services/role.service';
 
-@Controller('/user')
+@Controller('/roles')
 export class RoleController {
 
   constructor(
@@ -9,7 +9,7 @@ export class RoleController {
   ) { }
 
   @Get()
-  async getUsers() {
-    return this.roleService.getRole();
+  async getRoles() {
+    return this.roleService.getRoles();
   }
 }

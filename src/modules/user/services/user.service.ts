@@ -3,12 +3,11 @@ import { BaseHandler } from '../../shared/queries/base-handler';
 import { RoleConnection, RoleNode } from '../types/user-connection-types';
 
 @Injectable()
-export class RoleService extends BaseHandler{
+export class UserService extends BaseHandler {
 
-  async getRoles(): Promise<RoleConnection> {
+  async getUsers(): Promise<RoleConnection> {
 
     const qb = this.dbContext.roles.createQueryBuilder()
-    
 
     return this.dbContext.roles.getMany(qb, RoleNode);
 

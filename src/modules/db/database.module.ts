@@ -8,6 +8,7 @@ import { UserDetailsRepository } from '../../modules/user/repositories/user-deta
 import { DbContext } from './db-context';
 import { SeederService } from './services/seeder.service';
 import { RolesSeeder, UsersSeeder } from './seaders';
+// import { RolesRepository } from '@modules/user/repositories/roles.repository';
 
 const services = [SeederService];
 
