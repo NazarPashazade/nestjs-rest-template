@@ -22,8 +22,8 @@ go to https://github.com/NazarPashazade/stack/tree/main/database
 ``` yarn add module-alias ```
 
       ```
-      "_moduleAliases": {
-           "@config/*": "./dist/config/*",
-           "@modules/*": "./dist/modules/*"
-      }
+       "_moduleAliases": {
+             "@config/*": "./dist/config/*",
+              "@modules/*": "./dist/modules/*"
+       }
       ```
