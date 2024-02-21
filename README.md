@@ -1,4 +1,5 @@
-# nestjs-rest-template
+## nestjs-rest-template
+
 
 # How to set up Postgres and PGadmin:
 
@@ -7,8 +8,9 @@
  
 
 # How to set up Set up Absulute path:
-**Converting Relative path to Absolute Path**
-('.../../modules/user' == '@modules/user')
+
+**Converting Relative path to Absolute Path**('.../../modules/user' == '@modules/user')
+
 
 - **STEP 1:** Typescript Fix: (tsconfig.json)
 
@@ -37,6 +39,7 @@ yarn add module-alias
             "@modules/*": "./dist/modules/*"
        }
  ```
+
 
 
 - **STEP 3:** Use absolute path to import
