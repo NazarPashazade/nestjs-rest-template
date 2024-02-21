@@ -32,7 +32,7 @@ yarn add module-alias
 
 
 
-- **STEP 3:** Open package.json file. Add below lines:
+- **STEP 3:** Open **package.json file**. Add below lines:
 
  ```
        "_moduleAliases": {
@@ -42,7 +42,7 @@ yarn add module-alias
  ```
 
 
-- **STEP 4:** add this line too main.ts file
+- **STEP 4:** add this line too **main.ts** file
 
 ```
 import 'module-alias/register';
