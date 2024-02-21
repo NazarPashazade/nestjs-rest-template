@@ -6,7 +6,8 @@
 
  
 
-# How to set up Set up Absulute path:  
+# How to set up Set up Absulute path:
+**Converting Relative path to Absolute Path**
 ('.../../modules/user' == '@modules/user')
 
 **STEP 1:** Typescript Fix: (tsconfig.json)
