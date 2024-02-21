@@ -2,9 +2,9 @@
 
 # How to set up Postgres and PGadmin:
 
-[use Docker compose file: (https://github.com/NazarPashazade/stack/tree/main/database)]
+[use Docker compose file: (https://github.com/NazarPashazade/stack/tree/main/database)] (`<br>`)
 
-<br\>
+ 
 
 # How to set up Set up Absulute path:  
 ('.../../modules/user' == '@modules/user')
