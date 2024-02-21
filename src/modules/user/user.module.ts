@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
 import { RoleService } from './services/role.service';
-import { RoleController } from './controller/role.controller';
+import { RoleController } from './controllers/role.controller';
+import { UserController } from './controllers/user.controller';
+import { UserService } from './services/user.service';
 
-const services = [RoleService];
+const services = [RoleService, UserService];
 
-const _controllers = [RoleController];
+const _controllers = [RoleController, UserController];
 
 const _providers = [...services];
 

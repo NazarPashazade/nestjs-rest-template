@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { BaseHandler } from '../../shared/queries/base-handler';
-import { RoleConnection, RoleNode } from '../types/user-connection-types';
+import { RoleConnection, RoleNode } from '../types/role-connection-types';
 
 @Injectable()
 export class RoleService extends BaseHandler{
@@ -9,7 +9,6 @@ export class RoleService extends BaseHandler{
 
     const qb = this.dbContext.roles.createQueryBuilder()
     
-
     return this.dbContext.roles.getMany(qb, RoleNode);
 
   }

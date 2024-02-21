@@ -1,15 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { BaseHandler } from '../../shared/queries/base-handler';
-import { RoleConnection, RoleNode } from '../types/user-connection-types';
+import { UserConnection, UserNode } from '../types/user-connection-types';
+import { User } from '../domain/models/user.model';
 
 @Injectable()
 export class UserService extends BaseHandler {
 
-  async getUsers(): Promise<RoleConnection> {
+  async getUsers(): Promise<UserConnection> {
+    const qb = this.dbContext.users.createQueryBuilder()
+    return this.dbContext.users.getMany(qb, UserNode);
+  }
 
-    const qb = this.dbContext.roles.createQueryBuilder()
 
-    return this.dbContext.roles.getMany(qb, RoleNode);
-
+  async getUserById(id: string): Promise<User> {
+    const user = await this.dbContext.users.findOne(
+      {
+        where: { id },
+        relations: ['role', 'details', 'details.avatar', 'details.coverPhoto']
+      }
+    );
+    return user
   }
 }
