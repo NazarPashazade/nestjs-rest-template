@@ -1,7 +1,8 @@
 # nestjs-rest-template
 
-# How to set up database(Postgres and PGadmin) with docker compose file:
-go to https://github.com/NazarPashazade/stack/tree/main/database
+# How to set up Postgres and PGadmin:
+
+[use Docker compose file: (https://github.com/NazarPashazade/stack/tree/main/database)]
 
 
 # How to set up Set up Absulute path:  
