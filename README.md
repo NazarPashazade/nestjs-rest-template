@@ -10,7 +10,7 @@
 **Converting Relative path to Absolute Path**
 ('.../../modules/user' == '@modules/user')
 
-**STEP 1:** Typescript Fix: (tsconfig.json)
+- **STEP 1:** Typescript Fix: (tsconfig.json)
 
 ```
     "paths": {
@@ -21,7 +21,7 @@
 
 
 
-**STEP 2:** Install **module-alias** package
+- **STEP 2:** Install **module-alias** package
 
 ``` 
 yarn add module-alias 
