@@ -17,7 +17,9 @@ go to https://github.com/NazarPashazade/stack/tree/main/database
 ```
 
 
+
 2) ``` yarn add module-alias ```
+
 
 
 3) update package.json 
@@ -30,3 +32,15 @@ go to https://github.com/NazarPashazade/stack/tree/main/database
             "@modules/*": "./dist/modules/*"
        }
  ```
+
+
+4) 
+
+```
+import { RolesRepository } from '../../modules/user/repositories/roles.repository';  // BEFORE
+import { RolesRepository } from '@modules/user/repositories/roles.repository';       // AFTER
+
+```
+
+
+
