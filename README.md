@@ -7,7 +7,7 @@ go to https://github.com/NazarPashazade/stack/tree/main/database
 # How to set up Set up Absulute path:  
 ('.../../modules/user' == '@modules/user')
 
-1) update Typescript configuration: tsconfig.json
+**STEP 1:** Typescript Fix:
 
 ```
     "paths": {
@@ -18,13 +18,11 @@ go to https://github.com/NazarPashazade/stack/tree/main/database
 
 
 
-2) ``` yarn add module-alias ```
+**STEP 2:** ``` yarn add module-alias ```
 
 
 
-3) update package.json 
-
-``` yarn add module-alias ```
+**STEP 3:** Open package.json file. Add below lines:
 
  ```
        "_moduleAliases": {
@@ -34,7 +32,7 @@ go to https://github.com/NazarPashazade/stack/tree/main/database
  ```
 
 
-4) 
+**STEP 3:** Use absolute path to import
 
 ```
 import { RolesRepository } from '../../modules/user/repositories/roles.repository';  // BEFORE
