@@ -42,7 +42,7 @@ yarn add module-alias
  ```
 
 
-- **STEP 4:** add this line too **main.ts** file
+- **STEP 4:** add this line to **main.ts** file
 
 ```
 import 'module-alias/register';
