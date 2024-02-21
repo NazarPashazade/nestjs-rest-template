@@ -1,13 +1,13 @@
 # nestjs-rest-template
 
 
-## How to set up Postgres and PGadmin:
+### How to set up Postgres and PGadmin:
 
 - [use Docker compose file: (https://github.com/NazarPashazade/stack/tree/main/database)]
 
  
 
-## How to set up Set up Absulute path:
+### How to set up Set up Absulute path:
 
 **Converting Relative path to Absolute Path**('.../../modules/user' == '@modules/user')
 
@@ -16,7 +16,6 @@
 
 ```
     "paths": {
-        "@config/*": [  "config/*"  ],
         "@modules/*": [   "modules/*"  ]
     },
 ```
@@ -36,7 +35,6 @@ yarn add module-alias
 
  ```
        "_moduleAliases": {
-            "@config/*": "./dist/config/*",
             "@modules/*": "./dist/modules/*"
        }
  ```
