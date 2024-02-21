@@ -4,7 +4,8 @@
 go to https://github.com/NazarPashazade/stack/tree/main/database
 
 
-# Set up Absulute path:  ('.../../modules/user' == '@modules/user')
+# How to set up Set up Absulute path:  
+('.../../modules/user' == '@modules/user')
 
 1) update Typescript configuration: tsconfig.json
 
@@ -14,6 +15,7 @@ go to https://github.com/NazarPashazade/stack/tree/main/database
             "@modules/*": [ "modules/*"]
         }
       ```
+
 
 2) update package.json 
 
