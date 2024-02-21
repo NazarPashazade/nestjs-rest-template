@@ -4,7 +4,7 @@
 go to https://github.com/NazarPashazade/stack/tree/main/database
 
 
-# Set up Absulute path:  ('.../../modules/user' ----->  '@modules/user')
+# Set up Absulute path:  ('.../../modules/user' == '@modules/user')
 
 1) update Typescript configuration: tsconfig.json
 
@@ -15,3 +15,13 @@ go to https://github.com/NazarPashazade/stack/tree/main/database
         }
       ```
 
+2) update package.json 
+
+``` yarn add module-alias ```
+
+      ```
+      "_moduleAliases": {
+           "@config/*": "./dist/config/*",
+           "@modules/*": "./dist/modules/*"
+      }
+      ```
