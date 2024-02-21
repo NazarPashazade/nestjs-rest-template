@@ -9,21 +9,21 @@ go to https://github.com/NazarPashazade/stack/tree/main/database
 
 1) update Typescript configuration: tsconfig.json
 
-      ```
+```
     "paths": {
         "@config/*": [  "config/*"  ],
         "@modules/*": [   "modules/*"  ]
     },
-      ```
+```
 
 
 2) update package.json 
 
 ``` yarn add module-alias ```
 
-      ```
+ ```
        "_moduleAliases": {
             "@config/*": "./dist/config/*",
             "@modules/*": "./dist/modules/*"
        }
-      ```
+ ```
