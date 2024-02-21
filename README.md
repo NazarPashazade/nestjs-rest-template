@@ -17,7 +17,10 @@ go to https://github.com/NazarPashazade/stack/tree/main/database
 ```
 
 
-2) update package.json 
+2) ``` yarn add module-alias ```
+
+
+3) update package.json 
 
 ``` yarn add module-alias ```
 
