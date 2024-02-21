@@ -29,7 +29,7 @@ yarn add module-alias
 
 
 
-**STEP 3:** Open package.json file. Add below lines:
+- **STEP 3:** Open package.json file. Add below lines:
 
  ```
        "_moduleAliases": {
@@ -39,7 +39,7 @@ yarn add module-alias
  ```
 
 
-**STEP 3:** Use absolute path to import
+- **STEP 3:** Use absolute path to import
 
 ```
 import { RolesRepository } from '../../modules/user/repositories/roles.repository';  // BEFORE
