@@ -27,6 +27,7 @@
 
 ``` 
 yarn add module-alias 
+
 ```
 
 
@@ -41,8 +42,15 @@ yarn add module-alias
  ```
 
 
+- **STEP 4:** add this line too main.ts file
 
-- **STEP 3:** Use absolute path to import
+```
+import 'module-alias/register';
+
+```
+
+
+- **STEP 5:** Use absolute path to import
 
 ```
 import { RolesRepository } from '../../modules/user/repositories/roles.repository';  // BEFORE

@@ -85,6 +85,7 @@
     "testEnvironment": "node"
   },
   "_moduleAliases": {
+    "@config/*": "./dist/config/*",
     "@modules/*": "./dist/modules/*"
-  }
+}
 }

@@ -15,10 +15,9 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
-
     //--------- Customized part ----------
     "baseUrl": "./src",
-    "incremental": false, // needs to investigate
+    "incremental": false,
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "paths": {
