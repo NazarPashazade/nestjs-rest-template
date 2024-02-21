@@ -18,7 +18,9 @@ go to https://github.com/NazarPashazade/stack/tree/main/database
 
 
 
-**STEP 2:** ``` yarn add module-alias ```
+**STEP 2:** Install **module-alias** package
+
+``` yarn add module-alias ```
 
 
 
