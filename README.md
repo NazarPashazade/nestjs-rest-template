@@ -16,7 +16,6 @@
 
 ```
     "paths": {
-        "@config/*": [  "config/*"  ],
         "@modules/*": [   "modules/*"  ]
     },
 ```
@@ -36,7 +35,6 @@ yarn add module-alias
 
  ```
        "_moduleAliases": {
-            "@config/*": "./dist/config/*",
             "@modules/*": "./dist/modules/*"
        }
  ```
