@@ -20,7 +20,9 @@ go to https://github.com/NazarPashazade/stack/tree/main/database
 
 **STEP 2:** Install **module-alias** package
 
-``` yarn add module-alias ```
+``` 
+yarn add module-alias 
+```
 
 
 
