@@ -3,13 +3,13 @@ import { Global, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { postgresDataSource } from './postgres-connection-options';
 import { RolesRepository } from '../../modules/user/repositories/roles.repository';
+// import { RolesRepository } from '@modules/user/repositories/roles.repository';
 import { UsersRepository } from '../../modules/user/repositories/users.repository';
 import { UserDetailsRepository } from '../../modules/user/repositories/user-details.repository';
 import { DbContext } from './db-context';
 import { SeederService } from './services/seeder.service';
 import { RolesSeeder, UsersSeeder } from './seaders';
-// import { RolesRepository } from '@modules/user/repositories/roles.repository';
-
+ 
 const services = [SeederService];
 
 const repositories = [

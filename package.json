@@ -34,7 +34,7 @@
     "class-transformer": "0.3.1",
     "class-validator": "0.13.1",
     "cli-color": "^2.0.3",
-    "module-alias": "^2.2.3",
+    "module-alias": "2.2.2",
     "nest-winston": "^1.9.4",
     "nodemon": "^3.0.3",
     "pg": "^8.11.3",
@@ -85,7 +85,7 @@
     "testEnvironment": "node"
   },
   "_moduleAliases": {
-    "@config/*": "./dist/config/*",
-    "@modules/*": "./dist/modules/*"
-}
+    "@modules/*": "./src/modules/*",
+    "@config/*": "./src/config/*"
+  }
 }
