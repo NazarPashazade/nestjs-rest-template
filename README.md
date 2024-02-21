@@ -2,7 +2,7 @@
 
 # How to set up Postgres and PGadmin:
 
-[use Docker compose file: (https://github.com/NazarPashazade/stack/tree/main/database)] (`<br>`)
+[use Docker compose file: (https://github.com/NazarPashazade/stack/tree/main/database)]
 
  
 
