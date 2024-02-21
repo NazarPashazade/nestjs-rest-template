@@ -9,7 +9,7 @@
 # How to set up Set up Absulute path:  
 ('.../../modules/user' == '@modules/user')
 
-**STEP 1:** Typescript Fix:
+**STEP 1:** Typescript Fix: (tsconfig.json)
 
 ```
     "paths": {
