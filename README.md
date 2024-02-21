@@ -8,9 +8,10 @@ go to https://github.com/NazarPashazade/stack/tree/main/database
 
 1) update Typescript configuration: tsconfig.json
 
-      ```"paths": {
-          "@config/*": [ "config/*" ],
-          "@modules/*": [ "modules/*"]
-
-        },```
+      ```
+        "paths": {
+            "@config/*": [ "config/*" ],
+            "@modules/*": [ "modules/*"]
+        }
+      ```
 
