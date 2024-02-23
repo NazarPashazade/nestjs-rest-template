@@ -7,6 +7,7 @@ import { SharedModule } from './modules/shared/shared.module';
 import { UserModule } from './modules/user/user.module';
 import { InfrastructureModule } from './modules/infrastructure/infrastructure.module';
 import { FileModule } from './modules/file/file.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 const modules = [
   ConfigModule.forRoot({ isGlobal: true }),
@@ -14,7 +15,8 @@ const modules = [
   DatabaseModule,
   SharedModule,
   UserModule,
-  FileModule
+  FileModule,
+  AuthModule
 ]
 
 const _imports = [...modules]

@@ -3,6 +3,8 @@ import { UserService } from '../services/user.service';
 import { plainToClass } from 'class-transformer';
 import { UserDTO } from '../dto/user.dto';
 import { UserConnection } from '../types/user-connection-types';
+import { AuthorizeMember } from '../../auth/decorators/authorize-member.decorator';
+import { AuthorizeUser } from '../../auth/decorators/authorize-user.decorator';
 
 @Controller('/users')
 export class UserController {
@@ -12,6 +14,7 @@ export class UserController {
   ) { }
 
   @Get()
+  @AuthorizeUser()
   async getUsers(): Promise<UserConnection> {
     return await this.userService.getUsers();
   }
