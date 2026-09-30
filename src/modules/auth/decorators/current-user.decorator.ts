@@ -1,11 +1,10 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { GqlContextType, GqlExecutionContext } from '@nestjs/graphql';
 import * as jwt from 'jsonwebtoken';
 import { JwtPayload } from '../jwt/jwt-payload';
 import { JWT_SECRET } from '../../config/environment';
 
-export const extractUserFromRequest = (request: Request): JwtPayload => {
-    const authorizationHeader: string = request.headers['authorization'];
+export const extractUserFromRequest = (request: { headers: Record<string, string | string[] | undefined> }): JwtPayload => {
+    const authorizationHeader = request.headers['authorization'] as string;
 
     if (!authorizationHeader) {
         return null;
@@ -21,15 +20,9 @@ export const extractUserFromRequest = (request: Request): JwtPayload => {
 };
 
 const factory = (field: keyof JwtPayload, context: ExecutionContext): JwtPayload | JwtPayload[typeof field] => {
-    if (context.getType<GqlContextType>() === 'graphql') {
-        const ctx = GqlExecutionContext.create(context);
-        const { request } = ctx.getContext();
-
-        const user = extractUserFromRequest(request);
-        return field ? user && user[field] : user;
-    }
-
-    return null;
+    const request = context.switchToHttp().getRequest();
+    const user = extractUserFromRequest(request);
+    return field ? user && user[field] : user;
 };
 
 export const CurrentUser = createParamDecorator(factory);

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Transactional } from 'typeorm-transactional-cls-hooked';
+import { Transactional } from 'typeorm-transactional';
 import { RolesSeeder, UsersSeeder } from '../seaders';
 import { Logger } from '../../infrastructure/logging/logger';
 

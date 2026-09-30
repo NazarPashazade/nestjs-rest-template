@@ -1,6 +1,8 @@
 
 import { Global, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { DataSource } from 'typeorm';
+import { addTransactionalDataSource, getDataSourceByName } from 'typeorm-transactional';
 import { postgresDataSource } from './postgres-connection-options';
 import { RolesRepository } from '../../modules/user/repositories/roles.repository';
 // import { RolesRepository } from '@modules/user/repositories/roles.repository';
@@ -23,7 +25,14 @@ const seeders = [
     UsersSeeder
 ];
 
-const _imports = [TypeOrmModule.forRoot(postgresDataSource), TypeOrmModule.forFeature(repositories)]
+const _imports = [
+    TypeOrmModule.forRootAsync({
+        useFactory: () => postgresDataSource,
+        // TypeORM retries a failed connection by calling the factory again; re-registering throws.
+        dataSourceFactory: async (options) =>
+            getDataSourceByName('default') ?? addTransactionalDataSource(new DataSource(options)),
+    }),
+]
 
 const _providers = [DbContext, ...services, ...seeders, ...repositories]
 
