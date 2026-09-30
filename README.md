@@ -67,6 +67,7 @@ On startup the app automatically:
 | `yarn start:debug` | Run in watch mode with the debugger attached |
 | `yarn build` | Compile to `dist/` |
 | `yarn start:prod` | Run the compiled app from `dist/` |
+| `yarn postman:sync` | Push the Postman collection to your Postman workspace, replacing the imported copy (needs `POSTMAN_API_KEY`) |
 | `yarn swagger:generate` | Build and write the OpenAPI spec to `swagger/openapi.json` (no database needed) |
 | `yarn lint` | Lint and auto-fix with ESLint |
 | `yarn format` | Format with Prettier |
@@ -83,6 +84,8 @@ On startup the app automatically:
 | `POST` | `/auth/register` | | Create an account (member role, email unverified) |
 | `POST` | `/auth/verify-email` | | Verify an email with the token from the verification email |
 | `POST` | `/auth/resend-verification` | | Send the verification email again |
+| `POST` | `/auth/forgot-password` | | Send a password reset email |
+| `POST` | `/auth/reset-password` | | Set a new password with the token from the reset email |
 | `POST` | `/auth/login` | | Log in and receive a JWT |
 | `GET` | `/users` | Bearer token | List users |
 | `GET` | `/users/:id` | | Get a user by ID |
@@ -90,9 +93,16 @@ On startup the app automatically:
 
 Send the token from `/auth/login` as `Authorization: Bearer <token>`.
 
-All request bodies are validated; unknown fields are rejected with `400`. `/auth/*` routes are rate limited to 10 requests per minute per IP (3 for `resend-verification`).
+All request bodies are validated; unknown fields are rejected with `400`. `/auth/*` routes are rate limited to 10 requests per minute per IP (3 for `resend-verification` and `forgot-password`).
 
-A [Postman collection](postman/nestjs-rest-template.postman_collection.json) with tests for every endpoint is included.
+A [Postman collection](postman/nestjs-rest-template.postman_collection.json) with tests for every endpoint is included. Instead of re-importing it after changes, run `yarn postman:sync` with a [Postman API key](https://postman.co/settings/me/api-keys) exported as `POSTMAN_API_KEY` in `~/.zshenv` (read by every zsh shell, including VS Code tasks; `~/.zshrc` is only read by interactive terminals). Never put it in `.env`. The sync replaces the whole collection, so make edits in the repo file rather than in Postman.
+
+### Password reset flow
+
+1. `POST /auth/forgot-password` with `{ "email": "..." }` always returns `202 { "sent": true }`, whether or not the email is registered. For a registered email, a reset link to `WEB_BASE_URL/reset-password?token=...` is sent (written to the log by `MailService`).
+2. `POST /auth/reset-password` with `{ "token": "<token from the link>", "password": "N3wStr0ngPass!" }` returns `200 { "success": true }`. The password rules are the same as for registration. Resetting also marks the email as verified, since the link proves the user owns the mailbox.
+
+Reset links expire after 60 minutes and work only once: the token contains a fingerprint of the current password hash, so it stops matching as soon as the password changes. An invalid, expired, or used token returns `400 Token is invalid or has expired`.
 
 ### Swagger / OpenAPI
 

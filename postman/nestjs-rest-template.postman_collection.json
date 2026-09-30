@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "nestjs-rest-template",
-    "description": "REST API for nestjs-rest-template.\n\nRun the whole collection in order (Collection Runner): **Auth → Login** stores `accessToken`, and **Users → Get users** stores `userId` for the requests after it.\n\nDefault values match the local `.env` (`ADMIN_EMAIL` / `ADMIN_PASSWORD`) and the default port 3000.\n\nThe **Registration** folder creates a new `postman-<timestamp>@example.com` user on every run.\n\nThe same API is documented in Swagger UI at `{{baseUrl}}/docs`; `swagger/openapi.json` in the repo can also be imported into Postman.",
+    "description": "REST API for nestjs-rest-template.\n\nRun the whole collection in order (Collection Runner): **Auth → Login** stores `accessToken`, and **Users → Get users** stores `userId` for the requests after it.\n\nDefault values match the local `.env` (`ADMIN_EMAIL` / `ADMIN_PASSWORD`) and the default port 3000.\n\nThe **Registration** folder creates a new `postman-<timestamp>@example.com` user on every run.\n\nThe same API is documented in Swagger UI at `{{baseUrl}}/docs`; `swagger/openapi.json` in the repo can also be imported into Postman.\n\n`/auth/resend-verification` and `/auth/forgot-password` allow 3 requests per minute per IP, so wait a minute (or restart the API) before running the whole collection again.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "auth": {
@@ -49,6 +49,14 @@
     },
     {
       "key": "verificationToken",
+      "value": ""
+    },
+    {
+      "key": "newPassword",
+      "value": "N3wStr0ngPass!"
+    },
+    {
+      "key": "resetToken",
       "value": ""
     }
   ],
@@ -673,6 +681,352 @@
                 "exec": [
                   "pm.test('Status is 202', () => pm.response.to.have.status(202));",
                   "pm.test('Same response as a registered email', () => pm.expect(pm.response.json().sent).to.eql(true));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Password reset",
+      "description": "Forgot password → reset password → login with the new password, for the account created in **Registration**.\n\nThe reset link is written to the API log by `MailService`. Copy the `token` from it into the `resetToken` collection variable to run the last three requests; without it those tests are skipped. A reset link works only once.",
+      "item": [
+        {
+          "name": "Forgot password",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{registerEmail}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/forgot-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "forgot-password"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 202', () => pm.response.to.have.status(202));",
+                  "pm.test('Returns sent: true', () => pm.expect(pm.response.json().sent).to.eql(true));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Forgot password - unknown email",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"nobody@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/forgot-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "forgot-password"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 202', () => pm.response.to.have.status(202));",
+                  "pm.test('Same response as a registered email', () => pm.expect(pm.response.json().sent).to.eql(true));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Reset password - malformed token",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"not-a-jwt\",\n  \"password\": \"{{newPassword}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/reset-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "reset-password"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 400', () => pm.response.to.have.status(400));",
+                  "pm.test('Rejects the token format', () => pm.expect(pm.response.json().message).to.include('token must be a jwt string'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Reset password - access token is rejected",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"{{accessToken}}\",\n  \"password\": \"{{newPassword}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/reset-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "reset-password"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 400', () => pm.response.to.have.status(400));",
+                  "pm.test('Rejects tokens issued for another purpose', () => pm.expect(pm.response.json().message).to.eql('Token is invalid or has expired'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Reset password - weak password",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"{{accessToken}}\",\n  \"password\": \"short\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/reset-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "reset-password"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 400', () => pm.response.to.have.status(400));",
+                  "pm.test('Enforces the password rules', () => pm.expect(pm.response.json().message).to.include('password must be longer than or equal to 8 characters'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Reset password",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"{{resetToken}}\",\n  \"password\": \"{{newPassword}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/reset-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "reset-password"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.collectionVariables.get('resetToken')) {",
+                  "    pm.test.skip('Set resetToken from the password reset email in the API log', () => {});",
+                  "} else {",
+                  "    pm.test('Status is 200', () => pm.response.to.have.status(200));",
+                  "    pm.test('Password is reset', () => pm.expect(pm.response.json().success).to.eql(true));",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Reset password - link already used",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"{{resetToken}}\",\n  \"password\": \"An0therPass!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/reset-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "reset-password"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.collectionVariables.get('resetToken')) {",
+                  "    pm.test.skip('Runs after Reset password', () => {});",
+                  "} else {",
+                  "    pm.test('Status is 400', () => pm.response.to.have.status(400));",
+                  "    pm.test('Reset links are single use', () => pm.expect(pm.response.json().message).to.eql('Token is invalid or has expired'));",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login with new password",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{registerEmail}}\",\n  \"password\": \"{{newPassword}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.collectionVariables.get('resetToken')) {",
+                  "    pm.test.skip('Runs after Reset password', () => {});",
+                  "} else {",
+                  "    pm.test('Status is 201', () => pm.response.to.have.status(201));",
+                  "    pm.test('Returns an access token', () => pm.expect(pm.response.json().accessToken).to.be.a('string'));",
+                  "}"
                 ]
               }
             }

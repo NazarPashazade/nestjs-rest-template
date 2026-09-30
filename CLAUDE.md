@@ -39,6 +39,7 @@ NestJS 11 on the **Fastify** adapter (not Express), TypeORM 0.3 + Postgres, Pass
 - Protect routes with the decorators in `src/modules/auth/decorators/`: `@AuthorizeUser()`, `@AuthorizeMember()`, `@AuthorizeAdmin()`, `@AuthorizeRoles([...])`. Passing `{ resolveNullIfUnauthorized: true }` swaps the guard for `EmptyIfUnauthorizedInterceptor`, which returns `null` instead of throwing 401/403.
 - `@CurrentUser()` gets the JWT payload.
 - Email-verification and password-reset tokens are JWTs signed with the same `JWT_SECRET` and carry a `purpose` claim (`TokenPurpose` in `auth.service.ts`). Access-token validation rejects any payload with `purpose` or without `id`; keep both checks when adding token types.
+- Password reset tokens also carry `passwordFingerprint` (see `auth/utils/password.ts`); `verifyPasswordResetTokenAsync` compares it with the user's current hash, which makes reset links single-use without a DB table.
 - Registration flow: `RegisterHandler` (`@Transactional`) creates the user + `UserDetails` (login requires `details`), then sends the verification email via `runOnTransactionCommit`. `MailService` in `infrastructure/mail` only logs mail — no provider is configured.
 
 ### Validation
