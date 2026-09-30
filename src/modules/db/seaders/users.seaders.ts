@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { genSalt, hash } from 'bcryptjs';
 import { DbContext } from '../db-context';
 import { ADMIN_EMAIL, ADMIN_PASSWORD } from '../../config/environment';
 import { RoleName } from '../../user/domain/enums/role-name';
 import { Gender } from '../../user/domain/enums/gender';
+import { hashPassword } from '../../auth/utils/password';
  
 @Injectable()
 export class UsersSeeder {
@@ -12,7 +12,7 @@ export class UsersSeeder {
     public async run(): Promise<any> {
         const email = ADMIN_EMAIL;
         const password = ADMIN_PASSWORD;
-        const passwordHash = await hash(password, await genSalt(10));
+        const passwordHash = await hashPassword(password);
 
         const existingUser = await this.dbContext.users.findOne({ where:{email} });
          if (!existingUser) {

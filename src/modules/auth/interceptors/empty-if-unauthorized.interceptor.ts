@@ -1,5 +1,5 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Reflector } from '@nestjs/core';
 import { AuthService } from '../services/auth.service';
 import { JwtPayload } from '../jwt/jwt-payload';
@@ -15,7 +15,7 @@ export class EmptyIfUnauthorizedInterceptor implements NestInterceptor {
         const authorizationHeader: string = request.headers['authorization'];
 
         if (!authorizationHeader) {
-            return null;
+            return of(null);
         }
 
         let user: JwtPayload;
@@ -25,12 +25,12 @@ export class EmptyIfUnauthorizedInterceptor implements NestInterceptor {
 
             user = await this.authService.verifyJwtTokenAsync(token);
         } catch (error) {
-            return null;
+            return of(null);
         }
 
         const roles = this.reflector.get<RoleName[]>('roles', context.getHandler())?.map((r) => r.toString());
         if (roles && !roles.includes(user.role)) {
-            return null;
+            return of(null);
         }
 
         return next.handle();

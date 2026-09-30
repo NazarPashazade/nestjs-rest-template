@@ -1,5 +1,4 @@
-import { plainToClass } from 'class-transformer';
-import { ClassType } from 'class-transformer/ClassTransformer';
+import { ClassConstructor, plainToInstance } from 'class-transformer';
 import { ConnectionArgs } from './connection-args';
 import { Connection } from './connection-type';
 
@@ -13,7 +12,7 @@ export function getPagingParameters({ page = 1, pageSize = PAGE_SIZE }: Connecti
 
 export function getConnectionFromArray<TNode>(
     entities: any[],
-    nodeCls: ClassType<TNode>,
+    nodeCls: ClassConstructor<TNode>,
     { page = 1, pageSize = PAGE_SIZE }: ConnectionArgs = {},
     count: number = entities.length,
 ): Connection<TNode> {
@@ -23,7 +22,7 @@ export function getConnectionFromArray<TNode>(
 
     return {
         totalCount: count,
-        edges: entities.map((entity) => ({ node: plainToClass(nodeCls, entity) })),
+        edges: entities.map((entity) => ({ node: plainToInstance(nodeCls, entity) })),
         pageInfo: {
             page,
             totalPages,

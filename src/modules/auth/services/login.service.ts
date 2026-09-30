@@ -1,8 +1,8 @@
 import { User } from '@modules/user/domain/models/user.model';
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
-import { compare } from 'bcryptjs';
 import { BaseHandler } from '../../shared/queries/base-handler';
 import { JwtPayload } from '../jwt/jwt-payload';
+import { verifyPassword } from '../utils/password';
 
 @Injectable()
 export class LoginService extends BaseHandler {
@@ -70,14 +70,14 @@ export class LoginService extends BaseHandler {
             throw new ForbiddenException('Email or password is incorrect');
         }
 
-        if (!user.emailVerified) {
-            throw new BadRequestException('Email is not verified');
-        }
-
-        const isPasswordValid = await compare(password, user.password);
+        const isPasswordValid = await verifyPassword(password, user.password);
 
         if (!isPasswordValid) {
             throw new ForbiddenException('Email or password is incorrect');
+        }
+
+        if (!user.emailVerified) {
+            throw new BadRequestException('Email is not verified');
         }
     }
 }
