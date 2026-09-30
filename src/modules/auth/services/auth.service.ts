@@ -2,6 +2,8 @@ import { BadRequestException, Inject, Injectable, UnauthorizedException } from '
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from '../jwt/jwt-payload';
 import { DbContext } from '../../db/db-context';
+import { User } from '../../user/domain/models/user.model';
+import { passwordFingerprint } from '../utils/password';
 
 // Purpose-scoped tokens share JWT_SECRET with access tokens, so the claim is what stops one being used as the other.
 export enum TokenPurpose {
@@ -9,7 +11,7 @@ export enum TokenPurpose {
     PasswordReset = 'password-reset',
 }
 
-type PurposeTokenPayload = { email: string; purpose: TokenPurpose };
+type PurposeTokenPayload = { email: string; purpose: TokenPurpose; passwordFingerprint?: string };
 
 @Injectable()
 export class AuthService {
@@ -47,32 +49,42 @@ export class AuthService {
 
     // EMAIL VERIFICATION Token
     async generateEmailVerificationTokenAsync(email: string): Promise<string> {
-        return await this.signPurposeTokenAsync(email, TokenPurpose.EmailVerification, '2 days');
+        return await this.jwt.signAsync(
+            { email, purpose: TokenPurpose.EmailVerification } satisfies PurposeTokenPayload,
+            { expiresIn: '2 days' },
+        );
     }
 
     async verifyEmailVerificationTokenAsync(token: string): Promise<string> {
-        return await this.verifyPurposeTokenAsync(token, TokenPurpose.EmailVerification);
+        const { email } = await this.verifyPurposeTokenAsync(token, TokenPurpose.EmailVerification);
+        return email;
     }
 
     // Password RESET Token
-    async generatePasswordResetTokenAsync(email: string): Promise<string> {
-        return await this.signPurposeTokenAsync(email, TokenPurpose.PasswordReset, '60m');
+    async generatePasswordResetTokenAsync(user: Pick<User, 'email' | 'password'>): Promise<string> {
+        return await this.jwt.signAsync(
+            {
+                email: user.email,
+                purpose: TokenPurpose.PasswordReset,
+                passwordFingerprint: passwordFingerprint(user.password),
+            } satisfies PurposeTokenPayload,
+            { expiresIn: '60m' },
+        );
     }
 
-    async verifyPasswordResetTokenAsync(token: string): Promise<string> {
-        return await this.verifyPurposeTokenAsync(token, TokenPurpose.PasswordReset);
+    async verifyPasswordResetTokenAsync(token: string): Promise<User> {
+        const payload = await this.verifyPurposeTokenAsync(token, TokenPurpose.PasswordReset);
+
+        const user = await this.dbContext.users.findOne({ where: { email: payload.email } });
+
+        if (!user || passwordFingerprint(user.password) !== payload.passwordFingerprint) {
+            throw new BadRequestException('Token is invalid or has expired');
+        }
+
+        return user;
     }
 
-    private async signPurposeTokenAsync(
-        email: string,
-        purpose: TokenPurpose,
-        expiresIn: '2 days' | '60m',
-    ): Promise<string> {
-        const payload: PurposeTokenPayload = { email, purpose };
-        return await this.jwt.signAsync(payload, { expiresIn });
-    }
-
-    private async verifyPurposeTokenAsync(token: string, purpose: TokenPurpose): Promise<string> {
+    private async verifyPurposeTokenAsync(token: string, purpose: TokenPurpose): Promise<PurposeTokenPayload> {
         let payload: PurposeTokenPayload;
 
         try {
@@ -85,6 +97,6 @@ export class AuthService {
             throw new BadRequestException('Token is invalid or has expired');
         }
 
-        return payload.email;
+        return payload;
     }
 }

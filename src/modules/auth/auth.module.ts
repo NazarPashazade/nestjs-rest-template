@@ -12,8 +12,17 @@ import { RegisterHandler } from './handlers/register-handler';
 import { VerifyEmailHandler } from './handlers/verify-email-handler';
 import { ResendVerificationHandler } from './handlers/resend-verification-handler';
 import { EmailVerificationService } from './services/email-verification.service';
+import { ForgotPasswordHandler } from './handlers/forgot-password-handler';
+import { ResetPasswordHandler } from './handlers/reset-password-handler';
 
-const handlers = [LoginHandler, RegisterHandler, VerifyEmailHandler, ResendVerificationHandler]
+const handlers = [
+    LoginHandler,
+    RegisterHandler,
+    VerifyEmailHandler,
+    ResendVerificationHandler,
+    ForgotPasswordHandler,
+    ResetPasswordHandler,
+]
 
 const services = [AuthService, LoginService, EmailVerificationService];
 

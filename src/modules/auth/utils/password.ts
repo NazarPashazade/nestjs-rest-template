@@ -1,3 +1,4 @@
+import { createHash } from 'crypto';
 import { compare, hash } from 'bcryptjs';
 
 const SALT_ROUNDS = 12;
@@ -10,3 +11,7 @@ export const hashPassword = (password: string): Promise<string> => hash(password
 
 export const verifyPassword = (password: string, passwordHash: string): Promise<boolean> =>
     compare(password, passwordHash);
+
+// Embedded in reset tokens: once the password changes the fingerprint no longer matches, making each link single-use.
+export const passwordFingerprint = (passwordHash: string): string =>
+    createHash('sha256').update(passwordHash).digest('hex').slice(0, 16);
