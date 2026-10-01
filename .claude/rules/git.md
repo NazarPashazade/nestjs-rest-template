@@ -9,7 +9,7 @@
 
 ## Publishing
 
-- After committing on a branch that doesn't exist on `origin` yet, publish it with `git push -u origin <branch>`. Later commits on an already published branch are pushed with `git push`.
+- Push after every commit. A branch that doesn't exist on `origin` yet is published with `git push -u origin <branch>`; an already published branch is pushed with `git push`.
 - Never push to `main` and never force-push unless explicitly asked.
 
 ## Commit messages
@@ -20,6 +20,8 @@
 
 ## Pull requests
 
+- After the first push of a branch, open a pull request into `main` with `gh pr create --base main`. If the branch already has an open PR, later pushes update it; don't create another.
+- Never merge pull requests (no `gh pr merge`, no merging into `main` locally); merging is done by the user.
 - Title follows the commit subject style. The description covers a summary of the change, notable details (migrations, new env vars, API changes) and how it was tested.
 
 ## Attribution
