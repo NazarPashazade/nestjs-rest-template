@@ -341,6 +341,700 @@
           "Auth"
         ]
       }
+    },
+    "/articles": {
+      "get": {
+        "operationId": "ArticleController_getArticles",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "example": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "example": 20,
+              "type": "number"
+            }
+          },
+          {
+            "name": "category",
+            "required": false,
+            "in": "query",
+            "description": "ArticleCategory slug",
+            "schema": {
+              "maxLength": 200,
+              "example": "tehsil",
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Matches title or excerpt",
+            "schema": {
+              "maxLength": 100,
+              "example": "imtahan",
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": "newest",
+              "type": "string",
+              "enum": [
+                "newest",
+                "popular"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArticleConnection"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid query parameters"
+          }
+        },
+        "summary": "List published articles",
+        "tags": [
+          "Articles"
+        ]
+      }
+    },
+    "/articles/{slug}": {
+      "get": {
+        "operationId": "ArticleController_getArticleBySlug",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArticleDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Article not found or not published"
+          }
+        },
+        "summary": "Get a published article by slug and count the view",
+        "tags": [
+          "Articles"
+        ]
+      }
+    },
+    "/admin/articles": {
+      "get": {
+        "operationId": "AdminArticleController_getArticles",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "example": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "example": 20,
+              "type": "number"
+            }
+          },
+          {
+            "name": "category",
+            "required": false,
+            "in": "query",
+            "description": "ArticleCategory slug",
+            "schema": {
+              "maxLength": 200,
+              "example": "tehsil",
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Matches title or excerpt",
+            "schema": {
+              "maxLength": 100,
+              "example": "imtahan",
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": "newest",
+              "type": "string",
+              "enum": [
+                "newest",
+                "popular"
+              ]
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "DRAFT",
+                "PUBLISHED"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArticleConnection"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid query parameters"
+          },
+          "401": {
+            "description": "Missing or invalid access token"
+          },
+          "403": {
+            "description": "Admin role required"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "List articles in any status",
+        "tags": [
+          "Admin / Articles"
+        ]
+      },
+      "post": {
+        "operationId": "AdminArticleController_createArticle",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateArticleInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArticleDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input, or the category does not exist"
+          },
+          "401": {
+            "description": "Missing or invalid access token"
+          },
+          "403": {
+            "description": "Admin role required"
+          },
+          "409": {
+            "description": "An article with this slug already exists"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create a draft article",
+        "tags": [
+          "Admin / Articles"
+        ]
+      }
+    },
+    "/admin/articles/{id}": {
+      "get": {
+        "operationId": "AdminArticleController_getArticleById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArticleDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid access token"
+          },
+          "403": {
+            "description": "Admin role required"
+          },
+          "404": {
+            "description": "Article not found"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get an article by id",
+        "tags": [
+          "Admin / Articles"
+        ]
+      },
+      "patch": {
+        "operationId": "AdminArticleController_updateArticle",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateArticleInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArticleDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input, or the category does not exist"
+          },
+          "401": {
+            "description": "Missing or invalid access token"
+          },
+          "403": {
+            "description": "Admin role required"
+          },
+          "404": {
+            "description": "Article not found"
+          },
+          "409": {
+            "description": "An article with this slug already exists"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update an article",
+        "tags": [
+          "Admin / Articles"
+        ]
+      },
+      "delete": {
+        "operationId": "AdminArticleController_deleteArticle",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "401": {
+            "description": "Missing or invalid access token"
+          },
+          "403": {
+            "description": "Admin role required"
+          },
+          "404": {
+            "description": "Article not found"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Delete an article",
+        "tags": [
+          "Admin / Articles"
+        ]
+      }
+    },
+    "/admin/articles/{id}/publish": {
+      "post": {
+        "operationId": "AdminArticleController_publishArticle",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArticleDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid access token"
+          },
+          "403": {
+            "description": "Admin role required"
+          },
+          "404": {
+            "description": "Article not found"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Publish an article",
+        "tags": [
+          "Admin / Articles"
+        ]
+      }
+    },
+    "/admin/articles/{id}/unpublish": {
+      "post": {
+        "operationId": "AdminArticleController_unpublishArticle",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArticleDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid access token"
+          },
+          "403": {
+            "description": "Admin role required"
+          },
+          "404": {
+            "description": "Article not found"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Move an article back to drafts",
+        "tags": [
+          "Admin / Articles"
+        ]
+      }
+    },
+    "/article-categories": {
+      "get": {
+        "operationId": "ArticleCategoryController_getCategories",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "example": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "example": 20,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArticleCategoryConnection"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid query parameters"
+          }
+        },
+        "summary": "List article categories",
+        "tags": [
+          "Article categories"
+        ]
+      }
+    },
+    "/admin/article-categories": {
+      "post": {
+        "operationId": "AdminArticleCategoryController_createCategory",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateArticleCategoryInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArticleCategoryDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Missing or invalid access token"
+          },
+          "403": {
+            "description": "Admin role required"
+          },
+          "409": {
+            "description": "A category with this name or slug already exists"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create a category",
+        "tags": [
+          "Admin / Article categories"
+        ]
+      }
+    },
+    "/admin/article-categories/{id}": {
+      "patch": {
+        "operationId": "AdminArticleCategoryController_updateCategory",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateArticleCategoryInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArticleCategoryDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Missing or invalid access token"
+          },
+          "403": {
+            "description": "Admin role required"
+          },
+          "404": {
+            "description": "ArticleCategory not found"
+          },
+          "409": {
+            "description": "A category with this name or slug already exists"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update a category",
+        "tags": [
+          "Admin / Article categories"
+        ]
+      },
+      "delete": {
+        "operationId": "AdminArticleCategoryController_deleteCategory",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "401": {
+            "description": "Missing or invalid access token"
+          },
+          "403": {
+            "description": "Admin role required"
+          },
+          "404": {
+            "description": "ArticleCategory not found"
+          },
+          "409": {
+            "description": "ArticleCategory still has articles"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Delete a category",
+        "tags": [
+          "Admin / Article categories"
+        ]
+      }
     }
   },
   "info": {
@@ -437,13 +1131,30 @@
           "id": {
             "type": "string"
           },
-          "name": {
+          "email": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "emailVerified": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "format": "date-time",
             "type": "string"
           }
         },
         "required": [
           "id",
-          "name"
+          "email",
+          "firstName",
+          "lastName",
+          "emailVerified",
+          "createdAt"
         ]
       },
       "UserEdge": {
@@ -821,6 +1532,356 @@
         "required": [
           "success"
         ]
+      },
+      "ArticleCategoryDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "slug"
+        ]
+      },
+      "AuthorDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "firstName",
+          "lastName"
+        ]
+      },
+      "ArticleNode": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "excerpt": {
+            "type": "string"
+          },
+          "coverImageUrl": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "DRAFT",
+              "PUBLISHED"
+            ]
+          },
+          "publishedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "viewCount": {
+            "type": "number"
+          },
+          "category": {
+            "$ref": "#/components/schemas/ArticleCategoryDTO"
+          },
+          "author": {
+            "$ref": "#/components/schemas/AuthorDTO"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "slug",
+          "excerpt",
+          "status",
+          "viewCount",
+          "category",
+          "author"
+        ]
+      },
+      "ArticleEdge": {
+        "type": "object",
+        "properties": {
+          "node": {
+            "$ref": "#/components/schemas/ArticleNode"
+          }
+        },
+        "required": [
+          "node"
+        ]
+      },
+      "ArticleConnection": {
+        "type": "object",
+        "properties": {
+          "totalCount": {
+            "type": "number"
+          },
+          "edges": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ArticleEdge"
+            }
+          },
+          "pageInfo": {
+            "$ref": "#/components/schemas/PageInfo"
+          }
+        },
+        "required": [
+          "totalCount",
+          "edges",
+          "pageInfo"
+        ]
+      },
+      "ArticleDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "excerpt": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "coverImageUrl": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "DRAFT",
+              "PUBLISHED"
+            ],
+            "type": "string"
+          },
+          "publishedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "viewCount": {
+            "type": "number"
+          },
+          "category": {
+            "$ref": "#/components/schemas/ArticleCategoryDTO"
+          },
+          "author": {
+            "$ref": "#/components/schemas/AuthorDTO"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "slug",
+          "excerpt",
+          "content",
+          "status",
+          "viewCount",
+          "category",
+          "author",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "CreateArticleInput": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 200,
+            "example": "Qəbul İmtahanı – 1-ci Qrup Üzrə 2023"
+          },
+          "slug": {
+            "type": "string",
+            "maxLength": 200,
+            "example": "qebul-imtahani-1-ci-qrup-2023",
+            "description": "Generated from the title when omitted"
+          },
+          "excerpt": {
+            "type": "string",
+            "maxLength": 500,
+            "example": "1-ci ixtisas qrupu üzrə qəbul imtahanının təhlili."
+          },
+          "content": {
+            "type": "string",
+            "example": "## Giriş\n\nMəqalənin mətni..."
+          },
+          "coverImageUrl": {
+            "type": "string",
+            "maxLength": 2048,
+            "format": "uri",
+            "example": "https://cdn.example.com/covers/qebul-2023.jpg"
+          },
+          "categoryId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "3f1c2a9e-6b1d-4c8e-9a51-2f7d8e4b6c10"
+          }
+        },
+        "required": [
+          "title",
+          "excerpt",
+          "content",
+          "categoryId"
+        ]
+      },
+      "UpdateArticleInput": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 200,
+            "example": "Qəbul İmtahanı – 1-ci Qrup Üzrə 2023"
+          },
+          "slug": {
+            "type": "string",
+            "maxLength": 200,
+            "example": "qebul-imtahani-1-ci-qrup-2023",
+            "description": "Generated from the title when omitted"
+          },
+          "excerpt": {
+            "type": "string",
+            "maxLength": 500,
+            "example": "1-ci ixtisas qrupu üzrə qəbul imtahanının təhlili."
+          },
+          "content": {
+            "type": "string",
+            "example": "## Giriş\n\nMəqalənin mətni..."
+          },
+          "coverImageUrl": {
+            "type": "string",
+            "maxLength": 2048,
+            "format": "uri",
+            "example": "https://cdn.example.com/covers/qebul-2023.jpg"
+          },
+          "categoryId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "3f1c2a9e-6b1d-4c8e-9a51-2f7d8e4b6c10"
+          }
+        }
+      },
+      "ArticleCategoryNode": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "slug"
+        ]
+      },
+      "ArticleCategoryEdge": {
+        "type": "object",
+        "properties": {
+          "node": {
+            "$ref": "#/components/schemas/ArticleCategoryNode"
+          }
+        },
+        "required": [
+          "node"
+        ]
+      },
+      "ArticleCategoryConnection": {
+        "type": "object",
+        "properties": {
+          "totalCount": {
+            "type": "number"
+          },
+          "edges": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ArticleCategoryEdge"
+            }
+          },
+          "pageInfo": {
+            "$ref": "#/components/schemas/PageInfo"
+          }
+        },
+        "required": [
+          "totalCount",
+          "edges",
+          "pageInfo"
+        ]
+      },
+      "CreateArticleCategoryInput": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 100,
+            "example": "Təhsil"
+          },
+          "slug": {
+            "type": "string",
+            "maxLength": 100,
+            "example": "tehsil",
+            "description": "Generated from the name when omitted"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "UpdateArticleCategoryInput": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 100,
+            "example": "Təhsil"
+          },
+          "slug": {
+            "type": "string",
+            "maxLength": 100,
+            "example": "tehsil",
+            "description": "Generated from the name when omitted"
+          }
+        }
       }
     }
   }

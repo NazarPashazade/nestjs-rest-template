@@ -31,7 +31,7 @@
 
 ## Pull requests
 
-- After the first push of a branch, open a pull request into `main` with `gh pr create --base main`. If the branch already has an open PR, later pushes update it; don't create another.
+- When the user asks for a pull request, open one into `main` with `gh pr create --base main`. If the branch already has an open PR, later pushes update it; don't create another.
 - Never merge pull requests (no `gh pr merge`, no merging into `main` locally); merging is done by the user.
 - Title follows the commit subject style.
 - Every PR gets a real description, never an empty body or just the title repeated. Pass it with `--body` and use these sections:

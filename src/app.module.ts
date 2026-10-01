@@ -8,6 +8,7 @@ import { UserModule } from './modules/user/user.module';
 import { InfrastructureModule } from './modules/infrastructure/infrastructure.module';
 import { FileModule } from './modules/file/file.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { BlogModule } from './modules/blog/blog.module';
 
 const modules = [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -17,6 +18,7 @@ const modules = [
     UserModule,
     FileModule,
     AuthModule,
+    BlogModule,
 ];
 
 const _imports = [...modules];

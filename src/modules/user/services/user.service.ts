@@ -6,7 +6,7 @@ import { User } from '../domain/models/user.model';
 @Injectable()
 export class UserService extends BaseHandler {
     async getUsers(): Promise<UserConnection> {
-        const qb = this.dbContext.users.createQueryBuilder();
+        const qb = this.dbContext.users.createQueryBuilder('user').orderBy('user.createdAt', 'ASC');
         return this.dbContext.users.getMany(qb, UserNode);
     }
 

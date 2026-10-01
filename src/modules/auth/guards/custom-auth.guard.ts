@@ -21,7 +21,9 @@ export class CustomAuthGuard extends AuthGuard('jwt') {
             return false;
         }
 
-        const roles = this.reflector.get<RoleName[]>('roles', context.getHandler())?.map((r) => r.toString());
+        const roles = this.reflector
+            .getAllAndOverride<RoleName[]>('roles', [context.getHandler(), context.getClass()])
+            ?.map((r) => r.toString());
 
         if (!roles) {
             return true;

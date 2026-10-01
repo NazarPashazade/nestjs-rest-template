@@ -11,8 +11,8 @@ Package manager is Yarn (`yarn.lock`).
 - `yarn build` / `yarn start:prod` — compile to `dist/` and run
 - `yarn lint` — ESLint with `--fix` (code-quality rules only); `yarn format` / `yarn format:check` — Prettier over the whole repo. A husky pre-commit hook runs lint-staged (ESLint + Prettier on staged files).
 - `yarn test` — Jest (`*.spec.ts` under `src/`); single file: `yarn test src/modules/user/services/user.service.spec.ts`, single test: add `-t "name"`. No spec files or `test/` directory exist yet, so `test:e2e` has no config.
-- `yarn migration:generate` — builds, then generates a migration into `src/modules/db/migrations/` (named `<timestamp>-mg.ts`) by diffing entities against the DB
-- `yarn migration:run` — builds and runs pending migrations
+- `yarn migration:generate src/modules/db/migrations/<Name>` — builds, then generates `<timestamp>-<Name>.ts` by diffing entities against the DB
+- `yarn migration:run` / `yarn migration:revert` — builds, then runs pending migrations / reverts the last one
 - `yarn run:seeders` — runs the seeder service standalone
 
 A Postgres instance is required; the README points to a Docker Compose setup at https://github.com/NazarPashazade/stack/tree/main/database. Env vars (copy `.env.example` to `.env`, which is git-ignored; it is loaded by `import 'dotenv/config'` at the top of `main.ts`, then read as constants in `src/modules/config/environment.ts`, not through `ConfigService` — keep that import first): `APP_ENV`, `NODE_ENV`, `PORT`, `LOG_LEVEL` (defaults to `info` in production, `debug` otherwise), `POSTGRES_*`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `JWT_SECRET`, `WEB_BASE_URL`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `MAIL_FROM`.
@@ -32,7 +32,7 @@ NestJS 11 on the **Fastify** adapter (not Express), TypeORM 0.3 + Postgres, Pass
 
 Feature modules live in `src/modules/<feature>/` with `controllers/`, `handlers/` (one use case each) or `services/`, `domain/models/` (entities), `repositories/`, `dto/` and `types/`. Handlers and services extend `BaseHandler` and reach data through the global `DbContext`. A global `ValidationPipe` (`whitelist`, `forbidNonWhitelisted`, `transform`) runs in `main.ts`. List endpoints return Relay-style `Connection<TNode>` built by `src/modules/shared/types/pagination.helper.ts`.
 
-Area-specific rules live in `.claude/rules/` and load when matching files are touched: `api.md` (controllers, DTOs, Swagger), `database.md` (entities, migrations, repositories, seeders), `handlers-and-services.md`, `auth.md`, `mail.md`, `postman.md`. `git.md` (branches, commits, PRs) always loads.
+Area-specific rules live in `.claude/rules/` and load when matching files are touched: `api.md` (controllers, DTOs, Swagger), `api-docs.md` (keeping Swagger and Postman in sync), `database.md` (entities, repositories, seeders), `migrations.md`, `handlers-and-services.md`, `auth.md`, `mail.md`, `postman.md`. `git.md` (branches, commits, PRs) always loads.
 
 ### Global modules
 

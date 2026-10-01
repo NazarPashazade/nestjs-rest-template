@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { RolesSeeder, UsersSeeder } from '../seaders';
+import { ArticleCategoriesSeeder, RolesSeeder, UsersSeeder } from '../seaders';
 import { Logger } from '../../infrastructure/logging/logger';
 
 @Injectable()
@@ -8,6 +8,7 @@ export class SeederService {
         private readonly logger: Logger,
         private readonly rolesSeeder: RolesSeeder,
         private readonly usersSeeder: UsersSeeder,
+        private readonly articleCategoriesSeeder: ArticleCategoriesSeeder,
     ) {}
 
     // @Transactional({ connectionName: 'default' })
@@ -15,6 +16,7 @@ export class SeederService {
         this.logger.log('Running seeders ...', 'Database');
         await this.rolesSeeder.run();
         await this.usersSeeder.run();
+        await this.articleCategoriesSeeder.run();
         this.logger.log('Finished running seeders', 'Database');
     }
 }
