@@ -66,16 +66,19 @@ export class LoginService extends BaseHandler {
 
     async checkValidations(password: string, user: User): Promise<void> {
         if (!user) {
+            this.logger.warn('Login failed: unknown email', LoginService.name);
             throw new ForbiddenException('Email or password is incorrect');
         }
 
         const isPasswordValid = await verifyPassword(password, user.password);
 
         if (!isPasswordValid) {
+            this.logger.warn(`Login failed: wrong password for user ${user.id}`, LoginService.name);
             throw new ForbiddenException('Email or password is incorrect');
         }
 
         if (!user.emailVerified) {
+            this.logger.warn(`Login failed: email not verified for user ${user.id}`, LoginService.name);
             throw new BadRequestException('Email is not verified');
         }
     }

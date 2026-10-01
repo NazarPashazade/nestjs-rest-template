@@ -48,6 +48,7 @@ On startup the app automatically:
 | `NODE_ENV`          | Node environment                                         | `development`           |
 | `APP_ENV`           | `local` binds to `127.0.0.1`, anything else to `0.0.0.0` | `local`                 |
 | `PORT`              | HTTP port (defaults to `3000`)                           | `3000`                  |
+| `LOG_LEVEL`         | `error`/`warn`/`info`/`verbose`/`debug`                  | `debug`                 |
 | `WEB_BASE_URL`      | Frontend base URL                                        | `http://localhost:4200` |
 | `ADMIN_EMAIL`       | Seeded admin user's email                                | `admin@example.com`     |
 | `ADMIN_PASSWORD`    | Seeded admin user's password                             |                         |

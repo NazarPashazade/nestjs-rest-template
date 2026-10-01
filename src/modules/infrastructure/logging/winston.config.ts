@@ -1,6 +1,7 @@
 import * as winston from 'winston';
 import { cyanBright, Format, green, magentaBright, red, yellow } from 'cli-color';
 import { isObject } from '@nestjs/common/utils/shared.utils';
+import { LOG_LEVEL } from '../../config/environment';
 
 export const winstonConfig = {
     format: winston.format.combine(
@@ -26,7 +27,7 @@ export const winstonConfig = {
     ),
     transports: [
         new winston.transports.Console({
-            level: 'silly',
+            level: LOG_LEVEL,
             handleExceptions: true,
         }),
     ],

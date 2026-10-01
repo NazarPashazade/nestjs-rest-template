@@ -19,7 +19,9 @@ export class RegisterHandler extends BaseHandler {
 
     async execute(input: RegisterInput): Promise<RegisterPayload> {
         try {
-            return await this.register(input);
+            const payload = await this.register(input);
+            this.logger.log(`User registered: ${payload.id}`, RegisterHandler.name);
+            return payload;
         } catch (error) {
             // Two concurrent sign-ups with one email both pass the existence check; the unique index rejects the second.
             if (error instanceof QueryFailedError && error.driverError?.code === PG_UNIQUE_VIOLATION) {

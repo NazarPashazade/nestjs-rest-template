@@ -6,12 +6,10 @@ export class Logger {
     constructor(@Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly loggerService: LoggerService) {}
 
     error(error: HttpException | Error | string, context?: string): void {
-        if (error instanceof String) {
-            this.loggerService.error(error, undefined, context);
-        } else if (error instanceof HttpException) {
+        if (error instanceof Error) {
             this.loggerService.error(`${error.message}\n${error.stack}`, error.stack, context);
-        } else if (error instanceof Error) {
-            this.loggerService.error(`${error.message}\n${error.stack}`, error.stack, context);
+        } else {
+            this.loggerService.error(String(error), undefined, context);
         }
     }
 
