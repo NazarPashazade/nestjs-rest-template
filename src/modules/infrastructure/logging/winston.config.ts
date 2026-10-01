@@ -20,9 +20,7 @@ export const winstonConfig = {
             };
             const contextMessage = context ? yellow(`[${context}] `) : '';
             const levelMessage = color(level)(`[${level}] ${process.pid}   -`);
-            const messageText = isObject(message)
-                ? `\n${JSON.stringify(message, null, 2)}`
-                : color(level)(message);
+            const messageText = isObject(message) ? `\n${JSON.stringify(message, null, 2)}` : color(level)(message);
             return `${levelMessage} ${timestamp}  ${contextMessage}${messageText} ${yellow(ms)}`;
         }),
     ),
@@ -32,4 +30,4 @@ export const winstonConfig = {
             handleExceptions: true,
         }),
     ],
-}
+};

@@ -8,12 +8,12 @@ import {
     OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
-    VersionColumn
+    VersionColumn,
 } from 'typeorm';
- import { Role } from './role.model';
+import { Role } from './role.model';
 import { UserDetails } from './user-detail.model';
 import { IEditableEntity } from '@modules/shared/domain/interfaces';
- 
+
 @Entity({ name: 'users' })
 export class User implements IEditableEntity {
     @PrimaryGeneratedColumn('uuid')

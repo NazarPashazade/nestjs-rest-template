@@ -20,9 +20,9 @@ A NestJS REST API template with PostgreSQL, TypeORM, JWT authentication, and Win
 
 1. Install dependencies:
 
-   ```sh
-   yarn install
-   ```
+    ```sh
+    yarn install
+    ```
 
 2. Create the database named in `POSTGRES_DB` (for example, `demo-db`) using pgAdmin or `psql`. The Postgres container only creates the default `postgres` database.
 
@@ -30,11 +30,11 @@ A NestJS REST API template with PostgreSQL, TypeORM, JWT authentication, and Win
 
 4. Start the app:
 
-   ```sh
-   yarn start:local
-   ```
+    ```sh
+    yarn start:local
+    ```
 
-   The API listens on <http://localhost:3000> by default.
+    The API listens on <http://localhost:3000> by default.
 
 On startup the app automatically:
 
@@ -43,53 +43,53 @@ On startup the app automatically:
 
 ## Environment variables
 
-| Variable | Description | Example |
-| --- | --- | --- |
-| `NODE_ENV` | Node environment | `development` |
-| `APP_ENV` | `local` binds to `127.0.0.1`, anything else to `0.0.0.0` | `local` |
-| `PORT` | HTTP port (defaults to `3000`) | `3000` |
-| `WEB_BASE_URL` | Frontend base URL | `http://localhost:4200` |
-| `ADMIN_EMAIL` | Seeded admin user's email | `admin@example.com` |
-| `ADMIN_PASSWORD` | Seeded admin user's password | |
-| `POSTGRES_HOST` | Database host | `localhost` |
-| `POSTGRES_PORT` | Database port | `5432` |
-| `POSTGRES_DB` | Database name | `demo-db` |
-| `POSTGRES_USER` | Database user | `postgres` |
-| `POSTGRES_PASSWORD` | Database password | |
-| `JWT_SECRET` | Secret used to sign JWTs | |
+| Variable            | Description                                              | Example                 |
+| ------------------- | -------------------------------------------------------- | ----------------------- |
+| `NODE_ENV`          | Node environment                                         | `development`           |
+| `APP_ENV`           | `local` binds to `127.0.0.1`, anything else to `0.0.0.0` | `local`                 |
+| `PORT`              | HTTP port (defaults to `3000`)                           | `3000`                  |
+| `WEB_BASE_URL`      | Frontend base URL                                        | `http://localhost:4200` |
+| `ADMIN_EMAIL`       | Seeded admin user's email                                | `admin@example.com`     |
+| `ADMIN_PASSWORD`    | Seeded admin user's password                             |                         |
+| `POSTGRES_HOST`     | Database host                                            | `localhost`             |
+| `POSTGRES_PORT`     | Database port                                            | `5432`                  |
+| `POSTGRES_DB`       | Database name                                            | `demo-db`               |
+| `POSTGRES_USER`     | Database user                                            | `postgres`              |
+| `POSTGRES_PASSWORD` | Database password                                        |                         |
+| `JWT_SECRET`        | Secret used to sign JWTs                                 |                         |
 
 ## Scripts
 
-| Command | Description |
-| --- | --- |
-| `yarn start:local` | Run with nodemon + ts-node, loading `.env` |
-| `yarn start:dev` | Run in Nest watch mode |
-| `yarn start:debug` | Run in watch mode with the debugger attached |
-| `yarn build` | Compile to `dist/` |
-| `yarn start:prod` | Run the compiled app from `dist/` |
-| `yarn postman:sync` | Push the Postman collection to your Postman workspace, replacing the imported copy (needs `POSTMAN_API_KEY`) |
-| `yarn swagger:generate` | Build and write the OpenAPI spec to `swagger/openapi.json` (no database needed) |
-| `yarn lint` | Lint and auto-fix with ESLint |
-| `yarn format` | Format with Prettier |
-| `yarn test` | Run unit tests with Jest |
-| `yarn migration:generate` | Generate a migration from entity changes into `src/modules/db/migrations/` |
-| `yarn migration:run` | Run pending migrations |
-| `yarn run:seeders` | Run the seeders standalone |
+| Command                   | Description                                                                                                  |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `yarn start:local`        | Run with nodemon + ts-node, loading `.env`                                                                   |
+| `yarn start:dev`          | Run in Nest watch mode                                                                                       |
+| `yarn start:debug`        | Run in watch mode with the debugger attached                                                                 |
+| `yarn build`              | Compile to `dist/`                                                                                           |
+| `yarn start:prod`         | Run the compiled app from `dist/`                                                                            |
+| `yarn postman:sync`       | Push the Postman collection to your Postman workspace, replacing the imported copy (needs `POSTMAN_API_KEY`) |
+| `yarn swagger:generate`   | Build and write the OpenAPI spec to `swagger/openapi.json` (no database needed)                              |
+| `yarn lint`               | Lint and auto-fix with ESLint                                                                                |
+| `yarn format`             | Format with Prettier                                                                                         |
+| `yarn test`               | Run unit tests with Jest                                                                                     |
+| `yarn migration:generate` | Generate a migration from entity changes into `src/modules/db/migrations/`                                   |
+| `yarn migration:run`      | Run pending migrations                                                                                       |
+| `yarn run:seeders`        | Run the seeders standalone                                                                                   |
 
 ## API
 
-| Method | Path | Auth | Description |
-| --- | --- | --- | --- |
-| `GET` | `/` | | Health check |
-| `POST` | `/auth/register` | | Create an account (member role, email unverified) |
-| `POST` | `/auth/verify-email` | | Verify an email with the token from the verification email |
-| `POST` | `/auth/resend-verification` | | Send the verification email again |
-| `POST` | `/auth/forgot-password` | | Send a password reset email |
-| `POST` | `/auth/reset-password` | | Set a new password with the token from the reset email |
-| `POST` | `/auth/login` | | Log in and receive a JWT |
-| `GET` | `/users` | Bearer token | List users |
-| `GET` | `/users/:id` | | Get a user by ID |
-| `GET` | `/roles` | | List roles |
+| Method | Path                        | Auth         | Description                                                |
+| ------ | --------------------------- | ------------ | ---------------------------------------------------------- |
+| `GET`  | `/`                         |              | Health check                                               |
+| `POST` | `/auth/register`            |              | Create an account (member role, email unverified)          |
+| `POST` | `/auth/verify-email`        |              | Verify an email with the token from the verification email |
+| `POST` | `/auth/resend-verification` |              | Send the verification email again                          |
+| `POST` | `/auth/forgot-password`     |              | Send a password reset email                                |
+| `POST` | `/auth/reset-password`      |              | Set a new password with the token from the reset email     |
+| `POST` | `/auth/login`               |              | Log in and receive a JWT                                   |
+| `GET`  | `/users`                    | Bearer token | List users                                                 |
+| `GET`  | `/users/:id`                |              | Get a user by ID                                           |
+| `GET`  | `/roles`                    |              | List roles                                                 |
 
 Send the token from `/auth/login` as `Authorization: Bearer <token>`.
 
@@ -115,23 +115,23 @@ Schemas are generated by the `@nestjs/swagger` CLI plugin (configured in `nest-c
 
 1. `POST /auth/register`
 
-   ```json
-   {
-     "firstName": "Jane",
-     "lastName": "Doe",
-     "email": "jane@example.com",
-     "password": "Str0ngPass!",
-     "phoneNumber": "+994501234567",
-     "dateOfBirth": "1995-04-12",
-     "gender": "FEMALE"
-   }
-   ```
+    ```json
+    {
+        "firstName": "Jane",
+        "lastName": "Doe",
+        "email": "jane@example.com",
+        "password": "Str0ngPass!",
+        "phoneNumber": "+994501234567",
+        "dateOfBirth": "1995-04-12",
+        "gender": "FEMALE"
+    }
+    ```
 
-   `dateOfBirth` and `gender` are optional. The password must be 8–72 characters, and `phoneNumber` must be in international format. Emails are trimmed and lowercased, so they are case-insensitive. Returns `201` with `{ id, email, emailVerified: false }`, or `409` if the email is taken.
+    `dateOfBirth` and `gender` are optional. The password must be 8–72 characters, and `phoneNumber` must be in international format. Emails are trimmed and lowercased, so they are case-insensitive. Returns `201` with `{ id, email, emailVerified: false }`, or `409` if the email is taken.
 
 2. A verification email is sent after the account is saved. The link points to `WEB_BASE_URL/verify-email?token=...` and is valid for 2 days.
 
-   > No mail provider is configured yet: `MailService` (`src/modules/infrastructure/mail/mail.service.ts`) writes emails to the application log. Replace its `send()` body with a real provider before deploying.
+    > No mail provider is configured yet: `MailService` (`src/modules/infrastructure/mail/mail.service.ts`) writes emails to the application log. Replace its `send()` body with a real provider before deploying.
 
 3. `POST /auth/verify-email` with `{ "token": "<token from the link>" }` returns `200 { "success": true }`. Until then, login returns `400 Email is not verified`.
 
@@ -159,9 +159,9 @@ src/
 2. Create a repository extending `BaseRelayRepository<T>`, register it in `src/modules/db/database.module.ts`, and expose it on `DbContext`.
 3. Generate and review a migration:
 
-   ```sh
-   yarn migration:generate
-   ```
+    ```sh
+    yarn migration:generate
+    ```
 
 ### Protecting routes
 
@@ -194,5 +194,5 @@ Then import with the alias:
 
 ```ts
 import { RolesRepository } from '../../modules/user/repositories/roles.repository'; // before
-import { RolesRepository } from '@modules/user/repositories/roles.repository';      // after
+import { RolesRepository } from '@modules/user/repositories/roles.repository'; // after
 ```

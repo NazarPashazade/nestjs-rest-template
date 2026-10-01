@@ -1,4 +1,3 @@
-
 export class PageInfo {
     page: number;
 

@@ -10,12 +10,12 @@ const _controllers = [RoleController, UserController];
 
 const _providers = [...services];
 
-const _exports = [...services]
+const _exports = [...services];
 
 @Module({
     imports: [],
     providers: _providers,
     exports: _exports,
-    controllers: _controllers
+    controllers: _controllers,
 })
-export class UserModule { }
+export class UserModule {}

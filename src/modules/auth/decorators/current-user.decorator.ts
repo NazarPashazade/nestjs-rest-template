@@ -3,7 +3,9 @@ import * as jwt from 'jsonwebtoken';
 import { JwtPayload } from '../jwt/jwt-payload';
 import { JWT_SECRET } from '../../config/environment';
 
-export const extractUserFromRequest = (request: { headers: Record<string, string | string[] | undefined> }): JwtPayload => {
+export const extractUserFromRequest = (request: {
+    headers: Record<string, string | string[] | undefined>;
+}): JwtPayload => {
     const authorizationHeader = request.headers['authorization'] as string;
 
     if (!authorizationHeader) {
@@ -14,7 +16,7 @@ export const extractUserFromRequest = (request: { headers: Record<string, string
         const token = authorizationHeader.split(' ')[1];
 
         return jwt.verify(token, JWT_SECRET) as JwtPayload;
-    } catch (error) {
+    } catch {
         return null;
     }
 };

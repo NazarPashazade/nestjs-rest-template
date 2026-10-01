@@ -10,22 +10,22 @@ import { FileModule } from './modules/file/file.module';
 import { AuthModule } from './modules/auth/auth.module';
 
 const modules = [
-  ConfigModule.forRoot({ isGlobal: true }),
-  InfrastructureModule,
-  DatabaseModule,
-  SharedModule,
-  UserModule,
-  FileModule,
-  AuthModule
-]
+    ConfigModule.forRoot({ isGlobal: true }),
+    InfrastructureModule,
+    DatabaseModule,
+    SharedModule,
+    UserModule,
+    FileModule,
+    AuthModule,
+];
 
-const _imports = [...modules]
-const _providers = [AppService]
-const _controllers = [AppController]
+const _imports = [...modules];
+const _providers = [AppService];
+const _controllers = [AppController];
 
 @Module({
-  imports: _imports,
-  controllers: _controllers,
-  providers: _providers,
+    imports: _imports,
+    controllers: _controllers,
+    providers: _providers,
 })
-export class AppModule { }
+export class AppModule {}

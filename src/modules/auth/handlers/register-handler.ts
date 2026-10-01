@@ -73,8 +73,6 @@ export class RegisterHandler extends BaseHandler {
     }
 
     private sendVerificationEmail(user: User): void {
-        this.emailVerificationService
-            .sendAsync(user)
-            .catch((error) => this.logger.error(error, RegisterHandler.name));
+        this.emailVerificationService.sendAsync(user).catch((error) => this.logger.error(error, RegisterHandler.name));
     }
 }

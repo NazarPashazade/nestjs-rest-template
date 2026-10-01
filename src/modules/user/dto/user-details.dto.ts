@@ -1,10 +1,9 @@
-import { Exclude, Expose } from "class-transformer";
-import { Gender } from "../domain/enums/gender";
-import { FileInfoDTO } from "./file-info.dto";
+import { Exclude, Expose } from 'class-transformer';
+import { Gender } from '../domain/enums/gender';
+import { FileInfoDTO } from './file-info.dto';
 
 @Exclude()
 export class UserDetailsDTO {
-
     @Expose()
     phoneNumber: string;
 

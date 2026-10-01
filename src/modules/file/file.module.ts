@@ -8,7 +8,7 @@ const commandHandlers = [];
 
 const queryHandlers = [];
 
-const _imports = []
+const _imports = [];
 
 const _providers = [...commandHandlers, ...queryHandlers, ...resolvers, ...loaders];
 
@@ -22,4 +22,4 @@ const _exports = [];
     controllers: _controllers,
     exports: _exports,
 })
-export class FileModule { }
+export class FileModule {}

@@ -6,14 +6,11 @@ import { RoleService } from '../services/role.service';
 @ApiTags('Roles')
 @Controller('/roles')
 export class RoleController {
+    constructor(private readonly roleService: RoleService) {}
 
-  constructor(
-    private readonly roleService: RoleService,
-  ) { }
-
-  @Get()
-  @ApiOperation({ summary: 'List roles' })
-  async getRoles(): Promise<RoleConnection> {
-    return this.roleService.getRoles();
-  }
+    @Get()
+    @ApiOperation({ summary: 'List roles' })
+    async getRoles(): Promise<RoleConnection> {
+        return this.roleService.getRoles();
+    }
 }

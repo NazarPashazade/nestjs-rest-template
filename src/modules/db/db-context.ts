@@ -7,7 +7,6 @@ import { UsersRepository } from '../user/repositories/users.repository';
 
 @Injectable()
 export class DbContext {
- 
     @InjectRepository(RolesRepository)
     public readonly roles: RolesRepository;
 
@@ -16,5 +15,4 @@ export class DbContext {
 
     @InjectRepository(UserDetailsRepository)
     public readonly userDetails: UserDetailsRepository;
-
 }

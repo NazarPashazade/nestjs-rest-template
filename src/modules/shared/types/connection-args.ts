@@ -1,4 +1,3 @@
-
 export class ConnectionArgs {
     page?: number;
 

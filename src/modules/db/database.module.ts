@@ -1,4 +1,3 @@
-
 import { Global, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
@@ -11,19 +10,12 @@ import { UserDetailsRepository } from '../../modules/user/repositories/user-deta
 import { DbContext } from './db-context';
 import { SeederService } from './services/seeder.service';
 import { RolesSeeder, UsersSeeder } from './seaders';
- 
+
 const services = [SeederService];
 
-const repositories = [
-    RolesRepository,
-    UsersRepository,
-    UserDetailsRepository
-]
+const repositories = [RolesRepository, UsersRepository, UserDetailsRepository];
 
-const seeders = [
-    RolesSeeder,
-    UsersSeeder
-];
+const seeders = [RolesSeeder, UsersSeeder];
 
 const _imports = [
     TypeOrmModule.forRootAsync({
@@ -32,11 +24,11 @@ const _imports = [
         dataSourceFactory: async (options) =>
             getDataSourceByName('default') ?? addTransactionalDataSource(new DataSource(options)),
     }),
-]
+];
 
-const _providers = [DbContext, ...services, ...seeders, ...repositories]
+const _providers = [DbContext, ...services, ...seeders, ...repositories];
 
-const _exports = [DbContext, ...services]
+const _exports = [DbContext, ...services];
 
 @Global()
 @Module({
@@ -44,5 +36,4 @@ const _exports = [DbContext, ...services]
     providers: _providers,
     exports: _exports,
 })
-export class DatabaseModule { }
-
+export class DatabaseModule {}

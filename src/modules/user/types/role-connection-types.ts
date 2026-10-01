@@ -5,6 +5,6 @@ export class RoleNode implements RelayNode {
     name: string;
 }
 
-export class RoleEdge extends EdgeType(RoleNode) { }
+export class RoleEdge extends EdgeType(RoleNode) {}
 
-export class RoleConnection extends ConnectionType(RoleNode, RoleEdge) { }
+export class RoleConnection extends ConnectionType(RoleNode, RoleEdge) {}
