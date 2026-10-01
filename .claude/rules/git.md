@@ -1,5 +1,10 @@
 # Git workflow
 
+## When to commit
+
+- Never commit, push or open a pull request unless the user explicitly asks for it in the current request (e.g. "commit", "commit and push"). Finishing a task, passing tests or a previous commit request is not permission. Leave the changes uncommitted and mention they're ready to commit.
+- When the user does ask, follow the rest of this file: branch, commit, push and open the PR together.
+
 ## Branches
 
 - Commit each new piece of work on its own branch created from an up-to-date `main`, never directly on `main` or on an unrelated feature branch.
