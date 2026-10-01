@@ -5,6 +5,12 @@
 - Never commit, push or open a pull request unless the user explicitly asks for it in the current request (e.g. "commit", "commit and push"). Finishing a task, passing tests or a previous commit request is not permission. Leave the changes uncommitted and mention they're ready to commit.
 - When the user does ask, follow the rest of this file: branch, commit, push and open the PR together.
 
+## Protecting `main`
+
+- Never push to `main`, even if asked: no `git push origin main`, no plain `git push` while on `main`, no refspecs like `HEAD:main`. Changes reach `main` only through a pull request the user merges. If asked to push to `main`, explain this and offer a branch and PR instead.
+- Never commit on local `main`. Before every commit, check `git branch --show-current`; if it's `main`, create a new branch first (uncommitted changes carry over).
+- Never force-push, reset, rebase, delete or rename `main`, locally or on `origin`. Update local `main` only with `git fetch` or `git pull --ff-only`.
+
 ## Branches
 
 - Commit each new piece of work on its own branch created from an up-to-date `main`, never directly on `main` or on an unrelated feature branch.
@@ -15,7 +21,7 @@
 ## Publishing
 
 - Push after every commit. A branch that doesn't exist on `origin` yet is published with `git push -u origin <branch>`; an already published branch is pushed with `git push`.
-- Never push to `main` and never force-push unless explicitly asked.
+- Never force-push any branch unless explicitly asked.
 
 ## Commit messages
 
