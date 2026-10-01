@@ -22,7 +22,12 @@
 
 - After the first push of a branch, open a pull request into `main` with `gh pr create --base main`. If the branch already has an open PR, later pushes update it; don't create another.
 - Never merge pull requests (no `gh pr merge`, no merging into `main` locally); merging is done by the user.
-- Title follows the commit subject style. The description covers a summary of the change, notable details (migrations, new env vars, API changes) and how it was tested.
+- Title follows the commit subject style.
+- Every PR gets a real description, never an empty body or just the title repeated. Pass it with `--body` and use these sections:
+    - `## Summary`: what changed and why, as a few bullets.
+    - `## Notes`: migrations, new or changed env vars, API changes, breaking changes; write "None" if there are none.
+    - `## Testing`: how the change was verified (tests, lint, manual requests).
+- When more commits are pushed to a branch with an open PR, update the description with `gh pr edit --body` if they change its content.
 
 ## Attribution
 
