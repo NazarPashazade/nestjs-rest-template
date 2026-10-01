@@ -10,6 +10,7 @@ import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify
 import 'module-alias/register';
 import { SwaggerModule } from '@nestjs/swagger';
 import { createSwaggerDocument, SWAGGER_PATH } from './swagger';
+import { registerRequestLogging } from './modules/infrastructure/logging/request-logging';
 
 const port = PORT || 3000;
 const address = APP_ENV === 'local' ? '127.0.0.1' : '0.0.0.0';
@@ -22,6 +23,7 @@ async function bootstrap() {
 
     const logger = app.get<LoggerService>(WINSTON_MODULE_NEST_PROVIDER);
     app.useLogger(logger);
+    registerRequestLogging(app, logger);
 
     app.useGlobalPipes(
         new ValidationPipe({

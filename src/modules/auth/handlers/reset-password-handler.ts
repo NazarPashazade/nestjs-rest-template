@@ -21,6 +21,7 @@ export class ResetPasswordHandler extends BaseHandler {
         user.verifyEmail();
 
         await this.dbContext.users.save(user);
+        this.logger.log(`Password reset completed: user ${user.id}`, ResetPasswordHandler.name);
 
         return { success: true };
     }

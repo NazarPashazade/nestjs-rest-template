@@ -1,6 +1,7 @@
 export const APP_ENV = process.env.APP_ENV;
 export const NODE_ENV = process.env.NODE_ENV;
 export const PORT = Number(process.env.PORT);
+export const LOG_LEVEL = process.env.LOG_LEVEL || (NODE_ENV === 'production' ? 'info' : 'debug');
 
 export const BACKEND_HOST = process.env.BACKEND_HOST;
 export const WEB_BASE_URL = process.env.WEB_BASE_URL;

@@ -15,7 +15,7 @@ Package manager is Yarn (`yarn.lock`).
 - `yarn migration:run` — builds and runs pending migrations
 - `yarn run:seeders` — runs the seeder service standalone
 
-A Postgres instance is required; the README points to a Docker Compose setup at https://github.com/NazarPashazade/stack/tree/main/database. Env vars (copy `.env.example` to `.env`, which is git-ignored; it is loaded by `import 'dotenv/config'` at the top of `main.ts`, then read as constants in `src/modules/config/environment.ts`, not through `ConfigService` — keep that import first): `APP_ENV`, `NODE_ENV`, `PORT`, `POSTGRES_*`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `JWT_SECRET`, `WEB_BASE_URL`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `MAIL_FROM`.
+A Postgres instance is required; the README points to a Docker Compose setup at https://github.com/NazarPashazade/stack/tree/main/database. Env vars (copy `.env.example` to `.env`, which is git-ignored; it is loaded by `import 'dotenv/config'` at the top of `main.ts`, then read as constants in `src/modules/config/environment.ts`, not through `ConfigService` — keep that import first): `APP_ENV`, `NODE_ENV`, `PORT`, `LOG_LEVEL` (defaults to `info` in production, `debug` otherwise), `POSTGRES_*`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `JWT_SECRET`, `WEB_BASE_URL`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `MAIL_FROM`.
 
 ## Architecture
 

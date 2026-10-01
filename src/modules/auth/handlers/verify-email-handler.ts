@@ -24,6 +24,7 @@ export class VerifyEmailHandler extends BaseHandler {
         if (!user.emailVerified) {
             user.verifyEmail();
             await this.dbContext.users.save(user);
+            this.logger.log(`Email verified: user ${user.id}`, VerifyEmailHandler.name);
         }
 
         return { success: true };

@@ -32,6 +32,8 @@ export class ForgotPasswordHandler extends BaseHandler {
             ...resetPasswordTemplate({ firstName: user.firstName, link }),
         });
 
+        this.logger.log(`Password reset requested: user ${user.id}`, ForgotPasswordHandler.name);
+
         return { sent: true };
     }
 }

@@ -22,6 +22,8 @@ export class LoginHandler extends BaseHandler {
 
         const accessToken = await this.authService.generateJwtTokenAsync(jwtPayload);
 
+        this.logger.log(`User logged in: ${user.id}`, LoginHandler.name);
+
         return { accessToken };
     }
 }
