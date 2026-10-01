@@ -1,4 +1,4 @@
-import { Exclude, Expose } from 'class-transformer';
+import { Exclude, Expose, Type } from 'class-transformer';
 import { Gender } from '../domain/enums/gender';
 import { FileInfoDTO } from './file-info.dto';
 
@@ -20,9 +20,11 @@ export class UserDetailsDTO {
     nickname?: string;
 
     @Expose()
+    @Type(() => FileInfoDTO)
     avatar?: FileInfoDTO;
 
     @Expose()
+    @Type(() => FileInfoDTO)
     coverPhoto?: FileInfoDTO;
 
     @Expose()

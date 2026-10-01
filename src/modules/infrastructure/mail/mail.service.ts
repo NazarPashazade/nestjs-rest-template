@@ -1,6 +1,6 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { createTransport, Transporter } from 'nodemailer';
-import { MAIL_FROM, SMTP_HOST, SMTP_PASSWORD, SMTP_PORT, SMTP_USER } from '../../config/environment';
+import { MAIL_FROM, NODE_ENV, SMTP_HOST, SMTP_PASSWORD, SMTP_PORT, SMTP_USER } from '../../config/environment';
 import { Logger } from '../logging/logger';
 import { MailMessage } from './mail-message';
 
@@ -37,7 +37,9 @@ export class MailService implements OnModuleInit {
 
     async send({ to, subject, text, html }: MailMessage): Promise<void> {
         if (!this.transporter) {
-            this.logger.log(`To: ${to}\nSubject: ${subject}\n\n${text}`, MailService.name);
+            // Bodies carry verification and password-reset links, which must not end up in production logs.
+            const body = NODE_ENV === 'production' ? '' : `\n\n${text}`;
+            this.logger.log(`To: ${to}\nSubject: ${subject}${body}`, MailService.name);
             return;
         }
 
