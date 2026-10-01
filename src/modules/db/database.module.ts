@@ -7,15 +7,23 @@ import { RolesRepository } from '../../modules/user/repositories/roles.repositor
 // import { RolesRepository } from '@modules/user/repositories/roles.repository';
 import { UsersRepository } from '../../modules/user/repositories/users.repository';
 import { UserDetailsRepository } from '../../modules/user/repositories/user-details.repository';
+import { ArticlesRepository } from '../../modules/blog/repositories/articles.repository';
+import { ArticleCategoriesRepository } from '../../modules/blog/repositories/article-categories.repository';
 import { DbContext } from './db-context';
 import { SeederService } from './services/seeder.service';
-import { RolesSeeder, UsersSeeder } from './seaders';
+import { ArticleCategoriesSeeder, RolesSeeder, UsersSeeder } from './seaders';
 
 const services = [SeederService];
 
-const repositories = [RolesRepository, UsersRepository, UserDetailsRepository];
+const repositories = [
+    RolesRepository,
+    UsersRepository,
+    UserDetailsRepository,
+    ArticleCategoriesRepository,
+    ArticlesRepository,
+];
 
-const seeders = [RolesSeeder, UsersSeeder];
+const seeders = [RolesSeeder, UsersSeeder, ArticleCategoriesSeeder];
 
 const _imports = [
     TypeOrmModule.forRootAsync({

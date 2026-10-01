@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "nestjs-rest-template",
-    "description": "REST API for nestjs-rest-template.\n\nRun the whole collection in order (Collection Runner): **Auth → Login** stores `accessToken`, and **Users → Get users** stores `userId` for the requests after it.\n\nDefault values match the local `.env` (`ADMIN_EMAIL` / `ADMIN_PASSWORD`) and the default port 3000.\n\nThe **Registration** folder creates a new `postman-<timestamp>@example.com` user on every run.\n\nThe same API is documented in Swagger UI at `{{baseUrl}}/docs`; `swagger/openapi.json` in the repo can also be imported into Postman.\n\n`/auth/resend-verification` and `/auth/forgot-password` allow 3 requests per minute per IP, so wait a minute (or restart the API) before running the whole collection again.",
+    "description": "REST API for nestjs-rest-template.\n\nRun the whole collection in order (Collection Runner): **Auth → Login** stores `accessToken`, and **Users → Get users** stores `userId` for the requests after it. **Article categories → List article categories** stores `categoryId`, and **Articles → Create article** stores `articleId` / `articleSlug`; the Articles folder deletes the article it creates.\n\nDefault values match the local `.env` (`ADMIN_EMAIL` / `ADMIN_PASSWORD`) and the default port 3000.\n\nThe **Registration** folder creates a new `postman-<timestamp>@example.com` user on every run.\n\nThe same API is documented in Swagger UI at `{{baseUrl}}/docs`; `swagger/openapi.json` in the repo can also be imported into Postman.\n\n`/auth/resend-verification` and `/auth/forgot-password` allow 3 requests per minute per IP, so wait a minute (or restart the API) before running the whole collection again.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "auth": {
@@ -57,6 +57,22 @@
     },
     {
       "key": "resetToken",
+      "value": ""
+    },
+    {
+      "key": "categoryId",
+      "value": ""
+    },
+    {
+      "key": "newCategoryId",
+      "value": ""
+    },
+    {
+      "key": "articleId",
+      "value": ""
+    },
+    {
+      "key": "articleSlug",
       "value": ""
     }
   ],
@@ -1061,7 +1077,7 @@
                   "const body = pm.response.json();",
                   "pm.test('Returns a connection', () => {",
                   "    pm.expect(body.totalCount).to.be.a('number');",
-                  "    pm.expect(body.edges).to.be.an('array').with.lengthOf(body.totalCount);",
+                  "    pm.expect(body.edges).to.be.an('array').with.lengthOf(Math.min(body.totalCount, 20));",
                   "    pm.expect(body.pageInfo).to.include.keys('page', 'totalPages', 'hasNextPage', 'hasPreviousPage');",
                   "});",
                   "pm.test('Contains the admin user', () => {",
@@ -1208,6 +1224,847 @@
                   "    const names = body.edges.map((e) => e.node.name);",
                   "    pm.expect(names).to.include.members(['admin', 'member']);",
                   "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Article categories",
+      "item": [
+        {
+          "name": "List article categories",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/article-categories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "article-categories"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test('Returns the seeded categories', () => {",
+                  "    const slugs = body.edges.map((e) => e.node.slug);",
+                  "    pm.expect(slugs).to.include.members(['tehsil', 'karyera', 'elm', 'cemiyyet']);",
+                  "});",
+                  "const tehsil = body.edges.find((e) => e.node.slug === 'tehsil');",
+                  "if (tehsil) pm.collectionVariables.set('categoryId', tehsil.node.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create article category",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Postman {{$timestamp}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/article-categories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "article-categories"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 201', () => pm.response.to.have.status(201));",
+                  "const body = pm.response.json();",
+                  "pm.test('Generates a slug from the name', () => pm.expect(body.slug).to.match(/^postman-\\d+$/));",
+                  "pm.collectionVariables.set('newCategoryId', body.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create article category - duplicate name",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Təhsil\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/article-categories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "article-categories"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 409', () => pm.response.to.have.status(409));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create article category - no token",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Unauthorized\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/article-categories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "article-categories"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 401', () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update article category",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"slug\": \"postman-{{$timestamp}}-renamed\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/article-categories/{{newCategoryId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "article-categories",
+                "{{newCategoryId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Updates the slug', () => pm.expect(pm.response.json().slug).to.match(/-renamed$/));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete article category",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/admin/article-categories/{{newCategoryId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "article-categories",
+                "{{newCategoryId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 204', () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete article category - not found",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/admin/article-categories/{{newCategoryId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "article-categories",
+                "{{newCategoryId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 404', () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Articles",
+      "item": [
+        {
+          "name": "Create article",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Postman məqaləsi {{$timestamp}}\",\n  \"excerpt\": \"Postman ilə yaradılmış test məqaləsi.\",\n  \"content\": \"## Giriş\\n\\nMəqalənin mətni.\",\n  \"coverImageUrl\": \"https://cdn.example.com/covers/postman.jpg\",\n  \"categoryId\": \"{{categoryId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/articles",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "articles"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 201', () => pm.response.to.have.status(201));",
+                  "const body = pm.response.json();",
+                  "pm.test('Is a draft with a generated slug', () => {",
+                  "    pm.expect(body.status).to.eql('DRAFT');",
+                  "    pm.expect(body.slug).to.match(/^postman-meqalesi-\\d+$/);",
+                  "    pm.expect(body.category.slug).to.eql('tehsil');",
+                  "    pm.expect(body.author).to.have.all.keys('id', 'firstName', 'lastName');",
+                  "});",
+                  "pm.collectionVariables.set('articleId', body.id);",
+                  "pm.collectionVariables.set('articleSlug', body.slug);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create article - invalid input",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Postman məqaləsi {{$timestamp}}\",\n  \"excerpt\": \"Postman ilə yaradılmış test məqaləsi.\",\n  \"content\": \"## Giriş\\n\\nMəqalənin mətni.\",\n  \"coverImageUrl\": \"not-a-url\",\n  \"categoryId\": \"{{categoryId}}\",\n  \"slug\": \"Not A Slug\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/articles",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "articles"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 400', () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create article - duplicate slug",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Postman məqaləsi {{$timestamp}}\",\n  \"excerpt\": \"Postman ilə yaradılmış test məqaləsi.\",\n  \"content\": \"## Giriş\\n\\nMəqalənin mətni.\",\n  \"coverImageUrl\": \"https://cdn.example.com/covers/postman.jpg\",\n  \"categoryId\": \"{{categoryId}}\",\n  \"slug\": \"{{articleSlug}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/articles",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "articles"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 409', () => pm.response.to.have.status(409));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create article - no token",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Postman məqaləsi {{$timestamp}}\",\n  \"excerpt\": \"Postman ilə yaradılmış test məqaləsi.\",\n  \"content\": \"## Giriş\\n\\nMəqalənin mətni.\",\n  \"coverImageUrl\": \"https://cdn.example.com/covers/postman.jpg\",\n  \"categoryId\": \"{{categoryId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/articles",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "articles"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 401', () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get article by slug - draft is hidden",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/articles/{{articleSlug}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "articles",
+                "{{articleSlug}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 404', () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Publish article",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/admin/articles/{{articleId}}/publish",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "articles",
+                "{{articleId}}",
+                "publish"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test('Is published', () => {",
+                  "    pm.expect(body.status).to.eql('PUBLISHED');",
+                  "    pm.expect(body.publishedAt).to.be.a('string');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get article by slug",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/articles/{{articleSlug}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "articles",
+                "{{articleSlug}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test('Returns the full article and counts the view', () => {",
+                  "    pm.expect(body.content).to.be.a('string');",
+                  "    pm.expect(body.viewCount).to.eql(1);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "List articles",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/articles?category=tehsil&search=Postman&page=1&pageSize=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "articles"
+              ],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "tehsil"
+                },
+                {
+                  "key": "search",
+                  "value": "Postman"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test('Returns a connection without content', () => {",
+                  "    pm.expect(body.pageInfo).to.include.keys('page', 'totalPages', 'hasNextPage', 'hasPreviousPage');",
+                  "    const article = body.edges.find((e) => e.node.id === pm.collectionVariables.get('articleId'));",
+                  "    pm.expect(article).to.exist;",
+                  "    pm.expect(article.node).to.not.have.property('content');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "List articles - most viewed",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/articles?sort=popular",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "articles"
+              ],
+              "query": [
+                {
+                  "key": "sort",
+                  "value": "popular"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+                  "const views = pm.response.json().edges.map((e) => e.node.viewCount);",
+                  "pm.test('Sorted by view count', () => pm.expect(views).to.eql([...views].sort((a, b) => b - a)));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "List articles - invalid query",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/articles?sort=random&pageSize=500",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "articles"
+              ],
+              "query": [
+                {
+                  "key": "sort",
+                  "value": "random"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "500"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 400', () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update article",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Postman məqaləsi (yenilənib)\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/articles/{{articleId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "articles",
+                "{{articleId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test('Keeps the slug when the title changes', () => {",
+                  "    pm.expect(body.title).to.eql('Postman məqaləsi (yenilənib)');",
+                  "    pm.expect(body.slug).to.eql(pm.collectionVariables.get('articleSlug'));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete article category - still has articles",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/admin/article-categories/{{categoryId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "article-categories",
+                "{{categoryId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 409', () => pm.response.to.have.status(409));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Unpublish article",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/admin/articles/{{articleId}}/unpublish",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "articles",
+                "{{articleId}}",
+                "unpublish"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Is a draft', () => pm.expect(pm.response.json().status).to.eql('DRAFT'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "List articles - admin drafts",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/admin/articles?status=DRAFT",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "articles"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "DRAFT"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Includes the draft', () => {",
+                  "    const ids = pm.response.json().edges.map((e) => e.node.id);",
+                  "    pm.expect(ids).to.include(pm.collectionVariables.get('articleId'));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete article",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/admin/articles/{{articleId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "articles",
+                "{{articleId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 204', () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get article by id - deleted",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/admin/articles/{{articleId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "articles",
+                "{{articleId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 404', () => pm.response.to.have.status(404));"
                 ]
               }
             }
