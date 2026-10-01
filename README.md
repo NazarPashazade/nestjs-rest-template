@@ -61,21 +61,22 @@ On startup the app automatically:
 
 ## Scripts
 
-| Command                   | Description                                                                                                  |
-| ------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| `yarn start:local`        | Run with nodemon + ts-node, loading `.env`                                                                   |
-| `yarn start:dev`          | Run in Nest watch mode                                                                                       |
-| `yarn start:debug`        | Run in watch mode with the debugger attached                                                                 |
-| `yarn build`              | Compile to `dist/`                                                                                           |
-| `yarn start:prod`         | Run the compiled app from `dist/`                                                                            |
-| `yarn postman:sync`       | Push the Postman collection to your Postman workspace, replacing the imported copy (needs `POSTMAN_API_KEY`) |
-| `yarn swagger:generate`   | Build and write the OpenAPI spec to `swagger/openapi.json` (no database needed)                              |
-| `yarn lint`               | Lint and auto-fix with ESLint                                                                                |
-| `yarn format`             | Format with Prettier                                                                                         |
-| `yarn test`               | Run unit tests with Jest                                                                                     |
-| `yarn migration:generate` | Generate a migration from entity changes into `src/modules/db/migrations/`                                   |
-| `yarn migration:run`      | Run pending migrations                                                                                       |
-| `yarn run:seeders`        | Run the seeders standalone                                                                                   |
+| Command                          | Description                                                                                                  |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `yarn start:local`               | Run with nodemon + ts-node, loading `.env`                                                                   |
+| `yarn start:dev`                 | Run in Nest watch mode                                                                                       |
+| `yarn start:debug`               | Run in watch mode with the debugger attached                                                                 |
+| `yarn build`                     | Compile to `dist/`                                                                                           |
+| `yarn start:prod`                | Run the compiled app from `dist/`                                                                            |
+| `yarn postman:sync`              | Push the Postman collection to your Postman workspace, replacing the imported copy (needs `POSTMAN_API_KEY`) |
+| `yarn swagger:generate`          | Build and write the OpenAPI spec to `swagger/openapi.json` (no database needed)                              |
+| `yarn lint`                      | Lint and auto-fix with ESLint                                                                                |
+| `yarn format`                    | Format with Prettier                                                                                         |
+| `yarn test`                      | Run unit tests with Jest                                                                                     |
+| `yarn migration:generate <path>` | Generate a migration from entity changes, e.g. `src/modules/db/migrations/AddArticles`                       |
+| `yarn migration:run`             | Run pending migrations                                                                                       |
+| `yarn migration:revert`          | Revert the last applied migration                                                                            |
+| `yarn run:seeders`               | Run the seeders standalone                                                                                   |
 
 ## API
 
@@ -161,7 +162,7 @@ src/
 3. Generate and review a migration:
 
     ```sh
-    yarn migration:generate
+    yarn migration:generate src/modules/db/migrations/AddMyEntity
     ```
 
 ### Protecting routes
