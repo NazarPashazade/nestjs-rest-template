@@ -5,7 +5,7 @@ paths:
     - 'src/modules/**/repositories/**/*.ts'
 ---
 
-# Entities, repositories, migrations and seeders
+# Entities, repositories and seeders
 
 ## Entities
 
@@ -13,10 +13,7 @@ paths:
 - Table names are plural snake_case (`@Entity({ name: 'user_details' })`); multi-word columns set an explicit snake_case `name` (`@Column({ name: 'first_name' })`). Foreign keys get both a `<rel>Id` column and `@JoinColumn({ name: '<rel>_id' })`.
 - Primary keys are `@PrimaryGeneratedColumn('uuid')`. Editable entities implement `IEditableEntity` with `created_at` / `updated_at` as `timestamp with time zone` and a `@VersionColumn({ default: 0 })`.
 
-## Migrations
-
-- `synchronize` is off and migrations run on boot. Any entity change needs `yarn migration:generate` (requires a running Postgres); review the generated file in `src/modules/db/migrations/`.
-- Never edit a migration that has already been committed; add a new one instead. Keep `down()` a working reverse of `up()`.
+Any entity change needs a migration; see `migrations.md`.
 
 ## Repositories
 

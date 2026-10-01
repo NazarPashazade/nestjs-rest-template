@@ -26,5 +26,4 @@ paths:
 
 ## After changing endpoints or request/response shapes
 
-- Run `yarn swagger:generate` to refresh `swagger/openapi.json`.
-- Update `postman/nestjs-rest-template.postman_collection.json` to match, then run `yarn postman:sync`.
+Update Swagger and Postman as described in `api-docs.md`.

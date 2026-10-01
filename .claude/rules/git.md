@@ -1,5 +1,7 @@
 # Git workflow
 
+Never commit, push or open a pull request unless the user explicitly asks for it in the current message. The rules below describe how to do it once asked.
+
 ## Branches
 
 - Commit each new piece of work on its own branch created from an up-to-date `main`, never directly on `main` or on an unrelated feature branch.
@@ -9,7 +11,7 @@
 
 ## Publishing
 
-- Push after every commit. A branch that doesn't exist on `origin` yet is published with `git push -u origin <branch>`; an already published branch is pushed with `git push`.
+- When asked to commit, also push. A branch that doesn't exist on `origin` yet is published with `git push -u origin <branch>`; an already published branch is pushed with `git push`.
 - Never push to `main` and never force-push unless explicitly asked.
 
 ## Commit messages
@@ -20,7 +22,7 @@
 
 ## Pull requests
 
-- After the first push of a branch, open a pull request into `main` with `gh pr create --base main`. If the branch already has an open PR, later pushes update it; don't create another.
+- When the user asks for a pull request, open one into `main` with `gh pr create --base main`. If the branch already has an open PR, later pushes update it; don't create another.
 - Never merge pull requests (no `gh pr merge`, no merging into `main` locally); merging is done by the user.
 - Title follows the commit subject style.
 - Every PR gets a real description, never an empty body or just the title repeated. Pass it with `--body` and use these sections:
