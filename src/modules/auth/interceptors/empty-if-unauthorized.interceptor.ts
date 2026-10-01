@@ -31,7 +31,9 @@ export class EmptyIfUnauthorizedInterceptor implements NestInterceptor {
             return of(null);
         }
 
-        const roles = this.reflector.get<RoleName[]>('roles', context.getHandler())?.map((r) => r.toString());
+        const roles = this.reflector
+            .getAllAndOverride<RoleName[]>('roles', [context.getHandler(), context.getClass()])
+            ?.map((r) => r.toString());
         if (roles && !roles.includes(user.role)) {
             return of(null);
         }
