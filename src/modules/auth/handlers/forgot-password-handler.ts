@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { WEB_BASE_URL } from '../../config/environment';
 import { MailService } from '../../infrastructure/mail/mail.service';
+import { resetPasswordTemplate } from '../../infrastructure/mail/templates/reset-password.template';
 import { BaseHandler } from '../../shared/queries/base-handler';
 import { AuthService } from '../services/auth.service';
 import { ForgotPasswordInput } from '../types/forgot-password-input';
@@ -28,10 +29,7 @@ export class ForgotPasswordHandler extends BaseHandler {
 
         await this.mailService.send({
             to: user.email,
-            subject: 'Reset your password',
-            text:
-                `Hi ${user.firstName},\n\nReset your password by opening this link (valid for 60 minutes, single use):\n${link}` +
-                `\n\nIf you didn't request this, you can ignore this email.`,
+            ...resetPasswordTemplate({ firstName: user.firstName, link }),
         });
 
         return { sent: true };
