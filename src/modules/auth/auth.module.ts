@@ -22,7 +22,7 @@ const handlers = [
     ResendVerificationHandler,
     ForgotPasswordHandler,
     ResetPasswordHandler,
-]
+];
 
 const services = [AuthService, LoginService, EmailVerificationService];
 
@@ -32,9 +32,9 @@ const _imports = [
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register(JwtConfig),
     ThrottlerModule.forRoot([{ name: 'default', ttl: 60_000, limit: 10 }]),
-]
+];
 
-const _providers = [JwtStrategy, ...services, ...handlers]
+const _providers = [JwtStrategy, ...services, ...handlers];
 
 const _exports = [AuthService];
 
@@ -44,4 +44,4 @@ const _exports = [AuthService];
     controllers: _controllers,
     exports: _exports,
 })
-export class AuthModule { }
+export class AuthModule {}

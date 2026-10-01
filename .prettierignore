@@ -1,0 +1,7 @@
+dist
+dist-swagger
+coverage
+node_modules
+swagger
+postman
+yarn.lock

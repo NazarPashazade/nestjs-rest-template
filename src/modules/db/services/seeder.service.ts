@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { Transactional } from 'typeorm-transactional';
 import { RolesSeeder, UsersSeeder } from '../seaders';
 import { Logger } from '../../infrastructure/logging/logger';
 
@@ -9,7 +8,7 @@ export class SeederService {
         private readonly logger: Logger,
         private readonly rolesSeeder: RolesSeeder,
         private readonly usersSeeder: UsersSeeder,
-    ) { }
+    ) {}
 
     // @Transactional({ connectionName: 'default' })
     async runSeedsAsync(): Promise<void> {

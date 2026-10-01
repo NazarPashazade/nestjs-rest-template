@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { WEB_BASE_URL } from '../../config/environment';
 import { MailService } from '../../infrastructure/mail/mail.service';
+import { verifyEmailTemplate } from '../../infrastructure/mail/templates/verify-email.template';
 import { User } from '../../user/domain/models/user.model';
 import { AuthService } from './auth.service';
 
@@ -17,8 +18,7 @@ export class EmailVerificationService {
 
         await this.mailService.send({
             to: user.email,
-            subject: 'Verify your email address',
-            text: `Hi ${user.firstName},\n\nConfirm your email address by opening this link (valid for 2 days):\n${link}`,
+            ...verifyEmailTemplate({ firstName: user.firstName, link }),
         });
     }
 }

@@ -10,4 +10,4 @@ const _exports = [Logger, MailService];
     providers: _providers,
     exports: _exports,
 })
-export class InfrastructureModule { }
+export class InfrastructureModule {}

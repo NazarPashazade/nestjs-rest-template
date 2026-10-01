@@ -5,6 +5,6 @@ export class UserNode implements RelayNode {
     name: string;
 }
 
-export class UserEdge extends EdgeType(UserNode) { }
+export class UserEdge extends EdgeType(UserNode) {}
 
-export class UserConnection extends ConnectionType(UserNode, UserEdge) { }
+export class UserConnection extends ConnectionType(UserNode, UserEdge) {}

@@ -7,7 +7,10 @@ import { RoleName } from '../../user/domain/enums/role-name';
 
 @Injectable()
 export class EmptyIfUnauthorizedInterceptor implements NestInterceptor {
-    constructor(private reflector: Reflector, private authService: AuthService) { }
+    constructor(
+        private reflector: Reflector,
+        private authService: AuthService,
+    ) {}
 
     async intercept(context: ExecutionContext, next: CallHandler): Promise<Observable<any>> {
         const request = context.switchToHttp().getRequest();
@@ -24,7 +27,7 @@ export class EmptyIfUnauthorizedInterceptor implements NestInterceptor {
             const token = authorizationHeader.split(' ')[1];
 
             user = await this.authService.verifyJwtTokenAsync(token);
-        } catch (error) {
+        } catch {
             return of(null);
         }
 

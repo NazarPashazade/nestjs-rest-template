@@ -1,5 +1,3 @@
-
-
 import path from 'path';
 import { DataSource, DataSourceOptions } from 'typeorm';
 
@@ -25,8 +23,8 @@ export const postgresDataSource: DataSourceOptions = {
     migrationsRun: true,
     entities: [path.join(__dirname, '..', '**/domain/models/*.model.{ts,js}')],
     migrations: [path.join(__dirname, 'migrations/*.{ts,js}')],
-    migrationsTableName: "migrations_typeorm",
+    migrationsTableName: 'migrations_typeorm',
 };
 
-const dataSource = new DataSource(postgresDataSource)
-export default dataSource
+const dataSource = new DataSource(postgresDataSource);
+export default dataSource;

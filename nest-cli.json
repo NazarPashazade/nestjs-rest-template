@@ -8,13 +8,7 @@
       {
         "name": "@nestjs/swagger",
         "options": {
-          "dtoFileNameSuffix": [
-            ".dto.ts",
-            "-input.ts",
-            "-payload.ts",
-            "-connection-types.ts",
-            "page-info.ts"
-          ],
+          "dtoFileNameSuffix": [".dto.ts", "-input.ts", "-payload.ts", "-connection-types.ts", "page-info.ts"],
           "classValidatorShim": true,
           "introspectComments": false
         }

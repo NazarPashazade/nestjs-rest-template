@@ -6,7 +6,6 @@ import { verifyPassword } from '../utils/password';
 
 @Injectable()
 export class LoginService extends BaseHandler {
-
     async generateJwtPayload(user: User): Promise<JwtPayload> {
         const {
             id,

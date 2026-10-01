@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { Role } from '../domain/models/role.model';
 import { BaseRelayRepository } from '../../shared/repositories/base-relay-repository';
 
@@ -9,5 +9,3 @@ export class RolesRepository extends BaseRelayRepository<Role> {
         super(Role, dataSource.createEntityManager());
     }
 }
-
-

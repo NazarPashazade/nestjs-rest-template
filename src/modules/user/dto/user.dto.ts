@@ -1,11 +1,9 @@
-
 import { Exclude, Expose, Type } from 'class-transformer';
 import { RoleDTO } from './role.dto';
 import { UserDetailsDTO } from './user-details.dto';
 
 @Exclude()
 export class UserDTO {
-
     @Expose()
     id: string;
 
@@ -27,7 +25,7 @@ export class UserDTO {
 
     @Expose()
     @Type(() => UserDetailsDTO)
-    details: UserDetailsDTO
+    details: UserDetailsDTO;
 
     @Expose()
     createdAt: Date;

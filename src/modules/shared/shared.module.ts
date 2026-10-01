@@ -4,7 +4,7 @@ import { WinstonModule } from 'nest-winston';
 
 const services = [];
 
-const _imports = [WinstonModule.forRoot(winstonConfig)]
+const _imports = [WinstonModule.forRoot(winstonConfig)];
 
 const _providers = [...services];
 
@@ -16,4 +16,4 @@ const _exports = [...services];
     providers: _providers,
     exports: _exports,
 })
-export class SharedModule { }
+export class SharedModule {}

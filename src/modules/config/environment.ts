@@ -15,3 +15,8 @@ export const POSTGRES_USER = process.env.POSTGRES_USER;
 export const POSTGRES_PASSWORD = process.env.POSTGRES_PASSWORD;
 
 export const JWT_SECRET = process.env.JWT_SECRET;
+export const SMTP_HOST = process.env.SMTP_HOST;
+export const SMTP_PORT = Number(process.env.SMTP_PORT);
+export const SMTP_USER = process.env.SMTP_USER;
+export const SMTP_PASSWORD = process.env.SMTP_PASSWORD;
+export const MAIL_FROM = process.env.MAIL_FROM;

@@ -7,11 +7,10 @@ import { LoginPayload } from '../types/login-payload';
 
 @Injectable()
 export class LoginHandler extends BaseHandler {
-    @Inject() private readonly authService: AuthService
-    @Inject() private readonly loginService: LoginService
+    @Inject() private readonly authService: AuthService;
+    @Inject() private readonly loginService: LoginService;
 
     async execute({ email, password }: LoginInput): Promise<LoginPayload> {
-
         const user = await this.dbContext.users.findOne({
             where: { email },
             relations: ['details', 'details.avatar', 'details.coverPhoto', 'role'],
